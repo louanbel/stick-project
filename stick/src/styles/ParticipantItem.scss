@@ -1,0 +1,12 @@
+.participantItem {
+  display: flex;
+  align-items: center;
+  font-size: calc(100% + 2vw);
+
+  .participantName {
+    width: 30vw;
+  }
+  img {
+    width: 80px;
+  }
+}
