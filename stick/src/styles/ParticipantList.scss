@@ -1,0 +1,31 @@
+.participantList {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  gap: 15px;
+
+  .participantItem {
+    .firstPlace {
+      transition: color 1s ease;
+      color: #FFD700;
+    }
+
+    .secondPlace {
+      transition: color 1s ease;
+      color: #C0C0C0;
+    }
+
+    .thirdPlace {
+      transition: color 1s ease;
+      color: #CD7F32;
+    }
+  }
+
+  .participantModal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+

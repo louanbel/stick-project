@@ -12,8 +12,11 @@
   "dependencies": {
     "@dicebear/collection": "^7.0.0",
     "@dicebear/core": "^7.0.0",
+    "fs": "^0.0.1-security",
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-flip-move": "^3.0.5",
+    "react-icons": "^4.11.0"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",

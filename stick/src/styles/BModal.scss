@@ -1,0 +1,54 @@
+.modalBackground {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: black;
+  opacity: 0.5;
+}
+
+.modal {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+
+  background-color: #ffffff;
+  border-radius: 10px;
+  padding: 24px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+
+  .nameSection {
+    display: flex;
+    flex-direction: column;
+
+    input {
+      border: 1px solid #e5e7eb;
+      border-radius: 5px;
+      padding: 10px 12px;
+    }
+
+    .inputError {
+      color: red;
+      font-size: 12px;
+      margin-top: 3px;
+    }
+  }
+
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+
+  }
+
+  h2 {
+    padding: unset;
+    margin: unset;
+  }
+}
+

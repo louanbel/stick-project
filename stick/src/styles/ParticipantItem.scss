@@ -1,12 +1,37 @@
 .participantItem {
   display: flex;
   align-items: center;
-  font-size: calc(100% + 2vw);
+  font-size: 30px;
+
+  .participantItem:hover {
+    .addPointButton, .deletePointButton {
+      visibility: visible;
+    }
+  }
 
   .participantName {
     width: 30vw;
   }
+
   img {
     width: 80px;
+  }
+
+  .addPointButton, .deletePointButton {
+    cursor: pointer;
+    visibility: hidden;
+  }
+
+  .addPointButton {
+    margin-left: 12px;
+  }
+
+  .deletePointButton {
+    margin-right: 12px;
+
+    &[disabled] {
+      opacity: 0.5;
+      cursor: auto;
+    }
   }
 }

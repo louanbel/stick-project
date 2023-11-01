@@ -1,5 +1,3 @@
-import {Participant} from "../types/Participant";
-import {useEffect, useState} from "react";
 import '../styles/PointListItem.scss';
 type PointListItemProps = {
     points: number
@@ -7,7 +5,7 @@ type PointListItemProps = {
 
 export default function PointListItem({points}: PointListItemProps) {
     const pointItems = Array.from({length: points}, (v, index) => (
-        <li key={index}></li>
+        <li className="point" key={index}></li>
     ));
 
     return (
