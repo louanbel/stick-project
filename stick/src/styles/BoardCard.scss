@@ -1,0 +1,21 @@
+.boardCard {
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 32px;
+  h3 {
+    margin: 0;
+  }
+
+  .rightCard {
+    display: flex;
+    gap: 10px;
+    button {
+      height: fit-content;
+      font-size: 20px;
+      padding: 10px 10px 8px 10px;
+    }
+  }
+
+}

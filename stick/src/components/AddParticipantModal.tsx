@@ -9,7 +9,7 @@ type BModalProps = {
 }
 
 
-export default function BModalC({handleCancelAction, handleAddParticipant}: BModalProps) {
+export default function AddParticipantModal({handleCancelAction, handleAddParticipant}: BModalProps) {
     const [nameInput, setNameInput] = useState("");
     const [isError, setIsError] = useState(false);
 

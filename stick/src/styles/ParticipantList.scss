@@ -1,8 +1,22 @@
+.boardActions {
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+}
+
 .participantList {
   display: flex;
   flex-direction: column;
   list-style: none;
   gap: 15px;
+
+  input[type=checkbox] {
+    margin-right: 12px;
+  }
+
+  .position {
+    width: 2vw;
+  }
 
   .participantItem {
     .firstPlace {

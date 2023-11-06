@@ -1,13 +1,33 @@
 import './App.css'
-import {Participant} from "./types/Participant";
-import ParticipantList from "./components/ParticipantList";
+import {useEffect, useState} from "react";
+import {fetchPartialBoardList} from "./helpers/boardHelper";
+import BoardList from "./components/BoardList";
 
 function App() {
-    const testUserList: Participant[] = [new Participant("Louis", 4), new Participant("Elodie", 3), new Participant("Jean", 3)];
+    const [isBoardListLoaded, setIsBoardListLoaded] = useState(false);
+    const [boardList, setBoardList] = useState([]);
+
+    useEffect(() => {
+        if (isBoardListLoaded) {
+            return;
+        }
+
+        async function fetchData() {
+            try {
+                const boards = await fetchPartialBoardList();
+                setBoardList(boards);
+                setIsBoardListLoaded(true);
+            } catch (error) {
+                console.error('Error fetching partial boards:', error);
+            }
+        }
+
+        fetchData();
+    }, []);
 
     return (
         <>
-            <ParticipantList participants={[]}/>
+            <BoardList boardList={boardList}/>
         </>
     )
 }
