@@ -7,42 +7,29 @@ import BCheckbox from "./BCheckbox";
 import AddParticipantModal from "./AddParticipantModal";
 import DeleteParticipantModal from "./DeleteParticipantModal";
 import ParticipantItem from "./ParticipantItem";
+import {fetchBoard} from "../helpers/boardHelper";
+import {Board} from "../types/Board";
+import { useParams } from 'react-router-dom';
 
-type ParticipantItemProps = {
-    boardName: string;
-    participants: Participant[]
-}
-
-export default function ParticipantList({boardName, participants}: ParticipantItemProps) {
-    const [isParticipantListLoaded, setIsParticipantListLoaded] = useState(false);
+export default function ParticipantList() {
+    const [isBoardLoaded, setIsBoardLoaded] = useState(false);
     const [isAddParticipantModalOpen, setIsAddParticipantModalOpen] = useState(false);
     const [selectedParticipantList, setSelectedParticipantList] = useState([]);
     const [isDeleteParticipantModalOpen, setIsDeleteParticipantModalOpen] = useState(false);
-    const [participantList, setParticipantList] = useState([]);
+    const [board, setBoard] = useState<Board | null>(null);
+    const { boardId } = useParams();
+
     useEffect(
         () => {
-            if (!isParticipantListLoaded) {
-                const fetchData = async () => {
-                    try {
-                        const response = await fetch('http://127.0.0.1:5000/items', {
-                            method: 'GET',
-                        });
-                        if (response.ok) {
-                            const data: Participant[] = await response.json();
-                            console.log("ici");
-                            setParticipantList(data);
-                            setIsParticipantListLoaded(true);
-                        } else {
-                            console.error('Failed to fetch JSON data');
-                        }
-                    } catch (error) {
-                        console.error('Error fetching JSON data:', error);
-                    }
-                };
-                fetchData();
+            if (!isBoardLoaded) {
+                console.log("fetching board");
+                fetchBoard(boardId).then((board) => {
+                    setBoard(board);
+                    setIsBoardLoaded(true);
+                });
             }
         },
-        [isParticipantListLoaded]
+        []
     );
 
     useEffect(() => {
@@ -50,15 +37,15 @@ export default function ParticipantList({boardName, participants}: ParticipantIt
     }, [selectedParticipantList]);
 
     useEffect(() => {
-        if (isParticipantListLoaded) {
+        if (isBoardLoaded) {
             const updateData = async () => {
                 try {
-                    const response = await fetch('http://127.0.0.1:5000/items', {
+                    const response = await fetch(`http://127.0.0.1:5000/board/update-participants/${board?.id}`, {
                         method: 'PUT',
                         headers: {
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify(participantList),
+                        body: JSON.stringify(board?.participants),
                     });
 
                     if (response.ok) {
@@ -72,7 +59,7 @@ export default function ParticipantList({boardName, participants}: ParticipantIt
             };
             updateData();
         }
-    }, [isParticipantListLoaded, participantList]);
+    }, [isBoardLoaded, board]);
 
     function handleDeleteParticipantButton() {
         setIsDeleteParticipantModalOpen(!isDeleteParticipantModalOpen);
@@ -83,9 +70,9 @@ export default function ParticipantList({boardName, participants}: ParticipantIt
     }
 
     function handleAddParticipantModal(participant: Participant) {
-        const addData = async () => {
+        const addParticipant = async () => {
             try {
-                const response = await fetch('http://127.0.0.1:5000/items', {
+                const response = await fetch(`http://127.0.0.1:5000/board/add-participant/${board?.id}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -102,10 +89,14 @@ export default function ParticipantList({boardName, participants}: ParticipantIt
                 console.error(`Error while add the participant ${participant} board data:`, error);
             }
         };
-        addData();
-        const newParticipantList = [...participantList, participant].sort((a, b) => b.points - a.points);
-        setParticipantList(newParticipantList);
+        addParticipant();
+        const newParticipantList = board
+            ? [...board.participants, participant].sort((a, b) => b.points - a.points)
+            : [participant];
 
+        const updatedBoard = board ? {...board, participants: newParticipantList} : null;
+
+        setBoard(updatedBoard);
         setIsAddParticipantModalOpen(false);
     }
 
@@ -122,11 +113,12 @@ export default function ParticipantList({boardName, participants}: ParticipantIt
         participantsIdToDelete.map(id => {
             const deleteData = async () => {
                 try {
-                    const response = await fetch(`http://127.0.0.1:5000/items/${id}`, {
+                    const response = await fetch(`http://127.0.0.1:5000/board/delete-participant/${board?.id}`, {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json',
                         },
+                        body: JSON.stringify({id: id})
                     });
 
                     if (response.ok) {
@@ -141,20 +133,31 @@ export default function ParticipantList({boardName, participants}: ParticipantIt
             deleteData();
         });
 
-        const newParticipantList = participantList.filter(p => !participantsIdToDelete.includes(p.id));
-        setParticipantList(newParticipantList);
+        const newParticipantList = board
+            ? board.participants.filter((p) => !participantsIdToDelete.includes(p.id))
+            : [];
+        const updatedBoard = board ? {...board, participants: newParticipantList} : null;
+        setBoard(updatedBoard);
         setIsDeleteParticipantModalOpen(false);
     }
 
     function onParticipantUpdate(updatedParticipant: Participant) {
-        const updatedParticipantList = participantList.map((participant: Participant) => {
-            if (participant.id == updatedParticipant.id) {
-                return updatedParticipant;
-            }
-            return participant;
-        });
-        updatedParticipantList.sort((a, b) => b.points - a.points)
-        setParticipantList(updatedParticipantList);
+        const updatedParticipantList = board
+            ? board.participants.map((participant: Participant) => {
+                if (participant.id === updatedParticipant.id) {
+                    return updatedParticipant;
+                }
+                return participant;
+            })
+            : [];
+
+        const sortedParticipantList = updatedParticipantList
+            ? [...updatedParticipantList].sort((a, b) => b.points - a.points)
+            : [];
+
+        const updatedBoard = board ? {...board, participants: sortedParticipantList} : null;
+
+        setBoard(updatedBoard);
     }
 
     function handleSelectParticipant(participant: Participant) {
@@ -170,9 +173,9 @@ export default function ParticipantList({boardName, participants}: ParticipantIt
 
     return (
         <>
-            <h2>{boardName}</h2>
+            <h2>{board?.name}</h2>
             <FlipMove className="participantList">
-                {participantList.map((p, i) => (
+                {board?.participants.map((p, i) => (
                     <li key={p.id} className="participantItem">
                         <BCheckbox
                             id={"checkbox-" + p.id} participant={p}

@@ -1,4 +1,7 @@
 .boardCard {
+  border: 1px solid #e5e7eb;
+  border-radius: calc(0.5rem - 2px);
+  padding: 25px 20px;
   background-color: white;
   display: flex;
   flex-direction: row;
@@ -6,6 +9,15 @@
   gap: 32px;
   h3 {
     margin: 0;
+  }
+
+  .leftCard {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    p {
+      margin: 0;
+    }
   }
 
   .rightCard {
