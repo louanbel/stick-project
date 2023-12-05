@@ -22,11 +22,11 @@
   flex-direction: column;
   gap: 18px;
 
-  .nameSection {
+  .section {
     display: flex;
     flex-direction: column;
 
-    input {
+    .formInput {
       border: 1px solid #e5e7eb;
       border-radius: 5px;
       padding: 10px 12px;

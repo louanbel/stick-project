@@ -1,6 +1,6 @@
-import '../styles/BModal.scss';
-import BButton from "./BButton";
-import {Participant} from "../types/Participant";
+import '../../styles/modal/BModal.scss';
+import {Participant} from "../../types/Participant";
+import BModal from "./BModal";
 
 type DeleteModalProps = {
     participants: Participant[];
@@ -15,20 +15,11 @@ export default function DeleteParticipantModal({
                                                    handleValidateAction
                                                }: DeleteModalProps) {
 
-    function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
-        if (event.key === "Enter") {
-            handleValidateAction();
-        }
-    }
-
-
     return (
         <>
-            <div className="modalBackground">
-            </div>
-
-            <div className="modal">
-                <h2>Delete {participants.length} participant{participants.length > 1 && "s"}</h2>
+            <BModal handleFirstAction={handleValidateAction} handleSecondAction={handleCancelAction}
+                    title={`Delete ${participants.length} participant${participants.length > 1 ? "s" : ''}`}
+                    firstActionLabel={"Delete"}>
                 <div className="nameSection">
                     <p>Are you sure you want to
                         delete {participants.length} participant{participants.length > 1 && "s"}?</p>
@@ -37,12 +28,7 @@ export default function DeleteParticipantModal({
                         {participants.map(participant => <li key={participant.id}>{participant.name}</li>)}
                     </ul>
                 </div>
-                <div className="actions">
-                    <BButton second onClick={handleCancelAction}>Cancel</BButton>
-                    <BButton first onClick={handleValidateAction} onKeyDown={handleKeyPress}
-                    >Delete</BButton>
-                </div>
-            </div>
+            </BModal>
         </>
     )
 }

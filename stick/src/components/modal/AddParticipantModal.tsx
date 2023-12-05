@@ -1,7 +1,8 @@
-import '../styles/BModal.scss';
-import BButton from "./BButton";
-import {Participant} from "../types/Participant";
+import '../../styles/modal/BModal.scss';
+import BButton from "../BButton";
+import {Participant} from "../../types/Participant";
 import {useState} from "react";
+import BModal from "./BModal";
 
 type BModalProps = {
     handleCancelAction: () => void;
@@ -38,25 +39,21 @@ export default function AddParticipantModal({handleCancelAction, handleAddPartic
 
     return (
         <>
-            <div className="modalBackground">
-            </div>
-
-            <div className="modal">
-                <h2>Add a participant</h2>
-                <div className="nameSection">
+            <BModal handleFirstAction={handleAddAction} handleSecondAction={handleCancelAction}
+                    title={"Add a participant"}
+                    firstActionLabel={"Add"}>
+                <div className="section nameSection">
                     <label htmlFor="nameInput">Name</label>
-                    <input type="text" id="nameInput"
+                    <input type="text"
+                           className="formInput"
+                           id="nameInput"
                            placeholder="Enter participant's name"
                            onChange={(e) => handleOnInputChange(e.target.value)}
                            onKeyDown={handleKeyPress}
                     />
                     {isError && <span className="inputError">Name cannot be empty !</span>}
                 </div>
-                <div className="actions">
-                    <BButton second onClick={handleCancelAction}>Cancel</BButton>
-                    <BButton first onClick={handleAddAction}>Add</BButton>
-                </div>
-            </div>
+            </BModal>
         </>
     )
 }
