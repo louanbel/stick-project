@@ -4,8 +4,8 @@ import {useEffect, useState} from "react";
 import FlipMove from 'react-flip-move';
 import BButton from "./BButton";
 import BCheckbox from "./BCheckbox";
-import AddParticipantModal from "./AddParticipantModal";
-import DeleteParticipantModal from "./DeleteParticipantModal";
+import AddParticipantModal from "./modal/AddParticipantModal";
+import DeleteParticipantModal from "./modal/DeleteParticipantModal";
 import ParticipantItem from "./ParticipantItem";
 import {fetchBoard} from "../helpers/boardHelper";
 import {Board} from "../types/Board";
@@ -62,7 +62,9 @@ export default function ParticipantList() {
     }, [isBoardLoaded, board]);
 
     function handleDeleteParticipantButton() {
-        setIsDeleteParticipantModalOpen(!isDeleteParticipantModalOpen);
+        if(selectedParticipantList.length > 0) {
+            setIsDeleteParticipantModalOpen(!isDeleteParticipantModalOpen);
+        }
     }
 
     function handleAddParticipantButton() {
@@ -189,8 +191,8 @@ export default function ParticipantList() {
                 ))}
             </FlipMove>
             <div className={"boardActions"}>
-                <BButton onClick={handleAddParticipantButton}>Add</BButton>
-                <BButton onClick={handleDeleteParticipantButton}>Delete</BButton>
+                <BButton first onClick={handleAddParticipantButton}>Add</BButton>
+                <BButton second onClick={handleDeleteParticipantButton}>Delete</BButton>
             </div>
 
             {isAddParticipantModalOpen &&

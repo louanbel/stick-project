@@ -20,7 +20,7 @@ export async function fetchPartialBoardList(): Promise<PartialBoard[]> {
 
 export async function fetchBoard(boardId: number): Promise<Board> {
     try {
-        const response = await fetch(`http://127.0.0.1:5000/board/${boardId}`, {
+        const response = await fetch(`http://127.0.0.1:5000/boards/${boardId}`, {
             method: 'GET',
         });
 
