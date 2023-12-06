@@ -65,12 +65,13 @@ export default function BoardList() {
 
     return (
         <>
+            <h2>My boards</h2>
             <ul className="boardList">
                 {boardList.map(board => <li key={board.id}><BoardCard board={board} handleDeleteBoardAction={() => handleDeleteBoard(board)}/></li>)}
             </ul>
             <div className={"actions"}>
                 <BButton first onClick={handleCreateNewBoard}>Create</BButton>
-                <BButton onClick={() => {}}>Delete</BButton>
+                <BButton second onClick={() => {}}>Delete</BButton>
             </div>
             {isCreateBoardModalOpen &&
                 <CreateBoardModal className="addParticipantModal" handleCreateBoard={handleCreateBoardModal}

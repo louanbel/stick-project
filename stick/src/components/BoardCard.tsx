@@ -29,7 +29,7 @@ export default function BoardCard({board, handleDeleteBoardAction}: BoardCardPro
                 <p>{board.participantCount} participant{board.participantCount > 1 && "s"}</p>
             </div>
             <div className="rightCard">
-                <BButton onClick={handleAccessClick}><IoSearchOutline/></BButton>
+                <BButton second onClick={handleAccessClick}><IoSearchOutline/></BButton>
                 <BButton red onClick={handleDeleteBoardAction}><IoTrash/></BButton>
             </div>
         </div>

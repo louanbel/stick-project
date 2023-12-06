@@ -1,6 +1,10 @@
 .second {
   background-color: unset;
   color: #18181b;
+  border: 1px solid #e5e7eb;
+  &:hover {
+    background-color: #e5e7eb;
+  }
 }
 
 .first {
@@ -11,4 +15,9 @@
 .red {
   background-color: #f45858;
   color: white;
+  &:hover {
+    background-color: white;
+    color: #f45858;
+    border: 1px solid #f45858;
+  }
 }

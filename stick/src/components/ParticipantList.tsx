@@ -1,15 +1,18 @@
 import {Participant} from "../types/Participant";
 import '../styles/ParticipantList.scss';
 import {useEffect, useState} from "react";
-import FlipMove from 'react-flip-move';
-import BButton from "./BButton";
-import BCheckbox from "./BCheckbox";
-import AddParticipantModal from "./modal/AddParticipantModal";
-import DeleteParticipantModal from "./modal/DeleteParticipantModal";
-import ParticipantItem from "./ParticipantItem";
 import {fetchBoard} from "../helpers/boardHelper";
 import {Board} from "../types/Board";
-import { useParams } from 'react-router-dom';
+import {useParams} from 'react-router-dom';
+import dayjs from "dayjs";
+import FlipMove from "react-flip-move";
+import BCheckbox from "./BCheckbox";
+import ParticipantItem from "./ParticipantItem";
+import BButton from "./BButton";
+import AddParticipantModal from "./modal/AddParticipantModal";
+import DeleteParticipantModal from "./modal/DeleteParticipantModal";
+import FlipClockCountdown from '@leenguyen/react-flip-clock-countdown';
+import '@leenguyen/react-flip-clock-countdown/dist/index.css';
 
 export default function ParticipantList() {
     const [isBoardLoaded, setIsBoardLoaded] = useState(false);
@@ -17,7 +20,8 @@ export default function ParticipantList() {
     const [selectedParticipantList, setSelectedParticipantList] = useState([]);
     const [isDeleteParticipantModalOpen, setIsDeleteParticipantModalOpen] = useState(false);
     const [board, setBoard] = useState<Board | null>(null);
-    const { boardId } = useParams();
+    const [isTimesUp, setIsTimesUp] = useState(false);
+    const {boardId} = useParams();
 
     useEffect(
         () => {
@@ -62,7 +66,7 @@ export default function ParticipantList() {
     }, [isBoardLoaded, board]);
 
     function handleDeleteParticipantButton() {
-        if(selectedParticipantList.length > 0) {
+        if (selectedParticipantList.length > 0) {
             setIsDeleteParticipantModalOpen(!isDeleteParticipantModalOpen);
         }
     }
@@ -173,9 +177,20 @@ export default function ParticipantList() {
         setSelectedParticipantList(newList);
     }
 
+
+    function handleOnBoardTimesUp() {
+        setIsTimesUp(true);
+    }
+
     return (
         <>
             <h2>{board?.name}</h2>
+            {board &&
+            <div className="endTime">
+                <p>Time remaining :</p>
+                <FlipClockCountdown to={dayjs(board?.endTime).valueOf()} onComplete={() => handleOnBoardTimesUp()}/>
+                {isTimesUp && <p>Time is up !</p>}
+            </div>}
             <FlipMove className="participantList">
                 {board?.participants.map((p, i) => (
                     <li key={p.id} className="participantItem">
@@ -185,7 +200,7 @@ export default function ParticipantList() {
                             onSelectAction={() => handleSelectParticipant(p)}/>
                         <span
                             className={`position ${i == 0 ? "firstPlace" : i == 1 ? "secondPlace" : i == 2 ? "thirdPlace" : ''}`}>{i + 1}
-                    </span>
+                </span>
                         <ParticipantItem participant={p} onUpdate={onParticipantUpdate}/>
                     </li>
                 ))}
