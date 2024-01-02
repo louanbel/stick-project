@@ -7,12 +7,13 @@ import dayjs from "dayjs";
 import {FormControlLabel, Switch} from "@mui/material";
 
 type BCreateBoardModalProps = {
+    className: string;
     handleCancelAction: () => void;
     handleCreateBoard: (board: Board) => void;
 }
 
 
-export default function CreateBoardModal({handleCancelAction, handleCreateBoard}: BCreateBoardModalProps) {
+export default function CreateBoardModal({className, handleCancelAction, handleCreateBoard}: BCreateBoardModalProps) {
     const [boardNameInput, setBoardNameInput] = useState("");
     const [endDateTime, setEndDateTime] = useState(dayjs().add(1, 'week'));
     const [isUnlimitedDuration, setIsUnlimitedDuration] = useState(false);
@@ -82,7 +83,7 @@ export default function CreateBoardModal({handleCancelAction, handleCreateBoard}
     }
 
     return (
-        <>
+        <div className={className}>
             <BModal handleFirstAction={handleCreateBoardModal} handleSecondAction={handleCancelModal}
                     title={"Create a new board"} firstActionLabel={"Create"}>
                 <div className="section nameSection">
@@ -117,6 +118,6 @@ export default function CreateBoardModal({handleCancelAction, handleCreateBoard}
                     />
                 </div>
             </BModal>
-        </>
+        </div>
     )
 }

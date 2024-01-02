@@ -1,0 +1,71 @@
+.boardActions {
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+}
+
+h2 {
+  font-size: 2rem;
+  margin-bottom: 0;
+  margin-top: 0
+}
+
+.endTime {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-bottom: 12px;
+  .endTimeLabel {
+    display: flex;
+    gap: 10px;
+    .timesUpLabel {
+      color: #535bf2;
+    }
+  }
+  p {
+    font-size: 1.2rem;
+  }
+  .flipCountdown {
+    margin: 0 0;
+  }
+}
+
+.participantList {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  gap: 15px;
+
+  input[type=checkbox] {
+    margin-right: 12px;
+  }
+
+  .position {
+    width: 2vw;
+  }
+
+  .participantItem {
+    .firstPlace {
+      transition: color 1s ease;
+      color: #FFD700;
+    }
+
+    .secondPlace {
+      transition: color 1s ease;
+      color: #C0C0C0;
+    }
+
+    .thirdPlace {
+      transition: color 1s ease;
+      color: #CD7F32;
+    }
+  }
+
+  .participantModal {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+  }
+}
+

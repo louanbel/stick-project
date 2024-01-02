@@ -3,6 +3,7 @@ import {Participant} from "../../types/Participant";
 import BModal from "./BModal";
 
 type DeleteModalProps = {
+    className: string;
     participants: Participant[];
     handleCancelAction: () => void;
     handleValidateAction: () => void;
@@ -10,13 +11,14 @@ type DeleteModalProps = {
 
 
 export default function DeleteParticipantModal({
+                                                   className,
                                                    participants,
                                                    handleCancelAction,
                                                    handleValidateAction
                                                }: DeleteModalProps) {
 
     return (
-        <>
+        <div className={className}>
             <BModal handleFirstAction={handleValidateAction} handleSecondAction={handleCancelAction}
                     title={`Delete ${participants.length} participant${participants.length > 1 ? "s" : ''}`}
                     firstActionLabel={"Delete"}>
@@ -29,6 +31,6 @@ export default function DeleteParticipantModal({
                     </ul>
                 </div>
             </BModal>
-        </>
+        </div>
     )
 }

@@ -1,15 +1,15 @@
 import '../styles/BButton.scss';
-import * as React from "react";
 import {useState} from "react";
 import {Participant} from "../types/Participant";
 
 type BButtonProps = {
+    id: string;
     participant: Participant;
     onUnselectAction: (participant: Participant) => void;
     onSelectAction: (participant: Participant) => void;
 }
 
-export default function BCheckbox({participant, onUnselectAction, onSelectAction}: BButtonProps) {
+export default function BCheckbox({id, participant, onUnselectAction, onSelectAction}: BButtonProps) {
 
     const [isChecked, setIsChecked] = useState(false);
 
@@ -19,8 +19,8 @@ export default function BCheckbox({participant, onUnselectAction, onSelectAction
     }
 
     return (
-        <>
+        <div id={id}>
             <input type="checkbox" checked={isChecked} onChange={handleOnChange}/>
-        </>
+        </div>
     )
 }

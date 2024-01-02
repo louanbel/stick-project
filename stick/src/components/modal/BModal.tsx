@@ -24,7 +24,6 @@ export default function BModal({handleFirstAction, handleSecondAction, title, fi
     }, []);
 
     function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
-        console.log("wtf");
         if (event.key === "Enter") {
             handleFirstAction();
         }
@@ -41,9 +40,9 @@ export default function BModal({handleFirstAction, handleSecondAction, title, fi
             <div className="modal">
                 <h2>{title}</h2>
                 {children}
-                <div className="actions">
-                    <BButton second onKeyDown={handleKeyPress} onClick={handleSecondAction} >{secondActionLabel || "Cancel"}</BButton>
-                    <BButton first onKeyDown={handleKeyPress} onClick={handleFirstAction}>{firstActionLabel}</BButton>
+                <div className="actions" onKeyDown={handleKeyPress}>
+                    <BButton second onClick={handleSecondAction} >{secondActionLabel || "Cancel"}</BButton>
+                    <BButton first onClick={handleFirstAction}>{firstActionLabel}</BButton>
                 </div>
             </div>
         </>

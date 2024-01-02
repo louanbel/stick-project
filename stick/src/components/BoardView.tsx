@@ -178,13 +178,14 @@ export default function BoardView() {
     }
 
     function handleSelectParticipant(participant: Participant) {
-        setSelectedParticipantList([...selectedParticipantList, participant]);
+        if (!selectedParticipantList.includes(participant)) {
+            setSelectedParticipantList([...selectedParticipantList, participant]);
+        }
     }
 
 
-    function handleUnselectParticipant(participant: Participant) {
-        const removeParticipantIndex: number = selectedParticipantList.findIndex(p => p.id == participant.id);
-        const newList = selectedParticipantList.filter(p => p.id !== removeParticipantIndex);
+    function handleUnselectParticipant(participantToDelete: Participant) {
+        const newList = selectedParticipantList.filter(p => p.id !== participantToDelete.id);
         setSelectedParticipantList(newList);
     }
 
@@ -193,17 +194,24 @@ export default function BoardView() {
         setIsTimesUp(true);
     }
 
+    function handleGoBack() {
+        // go back to the previous page using react router
+        navigate(-1);
+    }
+
     return (
         <>
+            <BButton onClick={handleGoBack}><IoArrowBackOutline/> Go back</BButton>
             <h2>{board?.name}</h2>
             {board &&
-            <div className="endTime">
-                <div className="endTimeLabel">
-                    <p>Time remaining :</p>
-                    {isTimesUp && <p className="timesUpLabel">Time is up !</p>}
-                </div>
-                <FlipClockCountdown to={dayjs(board?.endTime).valueOf()} onComplete={() => handleOnBoardTimesUp()}/>
-            </div>}
+                <div className="endTime">
+                    <div className="endTimeLabel">
+                        <p>Time remaining :</p>
+                        {isTimesUp && <p className="timesUpLabel">Time is up !</p>}
+                    </div>
+                    <FlipClockCountdown to={dayjs(board?.endTime).valueOf()}
+                                        onComplete={() => handleOnBoardTimesUp()}/>
+                </div>}
             <FlipMove className="participantList">
                 {board?.participants.map((p, i) => (
                     <li key={p.id} className="participantItem">
@@ -220,11 +228,13 @@ export default function BoardView() {
             </FlipMove>
             <div className={"boardActions"}>
                 <BButton first onClick={handleAddParticipantButton}>Add</BButton>
-                <BButton second onClick={handleDeleteParticipantButton}>Delete</BButton>
+                <BButton disabled={selectedParticipantList.length <= 0} second
+                         onClick={handleDeleteParticipantButton}>Delete</BButton>
             </div>
 
             {isAddParticipantModalOpen &&
-                <AddParticipantModal className="addParticipantModal" handleAddParticipant={handleAddParticipantModal}
+                <AddParticipantModal className="addParticipantModal"
+                                     handleAddParticipant={handleAddParticipantModal}
                                      handleCancelAction={handleCancelAddParticipantModal}></AddParticipantModal>}
             {isDeleteParticipantModalOpen &&
                 <DeleteParticipantModal participants={selectedParticipantList} className="deleteParticipantModal"

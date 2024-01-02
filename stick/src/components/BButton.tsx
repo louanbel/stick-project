@@ -5,11 +5,13 @@ type BButtonProps = {
     first?: boolean;
     second?: boolean;
     red?: boolean;
+    submit?: boolean;
     children?: React.ReactNode;
     onClick: () => void;
+    disabled?: boolean;
 }
 
-export default function BButton({first, second, red, children, onClick}: BButtonProps) {
+export default function BButton({first, second, red, children, onClick, disabled, submit}: BButtonProps) {
     const styles = [
         first && "first",
         second && "second",
@@ -18,7 +20,8 @@ export default function BButton({first, second, red, children, onClick}: BButton
 
     return (
         <>
-            <button className={styles} onClick={onClick}>{children}</button>
+            <button type={!!submit ? 'submit' : 'button'}
+                    disabled={!!disabled} className={styles} onClick={onClick}>{children}</button>
         </>
     )
 }

@@ -1,16 +1,16 @@
 import '../../styles/modal/BModal.scss';
-import BButton from "../BButton";
 import {Participant} from "../../types/Participant";
 import {useState} from "react";
 import BModal from "./BModal";
 
 type BModalProps = {
+    className: string;
     handleCancelAction: () => void;
     handleAddParticipant: (participant: Participant) => void;
 }
 
 
-export default function AddParticipantModal({handleCancelAction, handleAddParticipant}: BModalProps) {
+export default function AddParticipantModal({className, handleCancelAction, handleAddParticipant}: BModalProps) {
     const [nameInput, setNameInput] = useState("");
     const [isError, setIsError] = useState(false);
 
@@ -38,7 +38,7 @@ export default function AddParticipantModal({handleCancelAction, handleAddPartic
 
 
     return (
-        <>
+        <div className={className}>
             <BModal handleFirstAction={handleAddAction} handleSecondAction={handleCancelAction}
                     title={"Add a participant"}
                     firstActionLabel={"Add"}>
@@ -54,6 +54,6 @@ export default function AddParticipantModal({handleCancelAction, handleAddPartic
                     {isError && <span className="inputError">Name cannot be empty !</span>}
                 </div>
             </BModal>
-        </>
+        </div>
     )
 }
