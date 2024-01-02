@@ -1,0 +1,34 @@
+.email, .password {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+}
+
+h1 {
+  margin: 0;
+}
+
+.error {
+  color: red;
+  font-size: 16px;
+}
+
+.loginForm {
+  margin: auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: flex-start;
+  .loginLabel {
+    margin: 0 0 15px 0;
+  }
+
+  input {
+    width: 100%;
+    border: 1px solid #e5e7eb;
+    border-radius: 5px;
+    padding: 10px 12px;
+    font-family: 'Gordita',  sans-serif;
+    font-size: 16px;
+  }
+}

@@ -1,9 +1,10 @@
 import './App.css'
 import BoardList from "./components/BoardList";
-import ParticipantList from "./components/ParticipantList";
+import BoardView from "./components/BoardView.tsx";
 import { Routes, Route } from 'react-router-dom';
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {LocalizationProvider} from "@mui/x-date-pickers";
+import LoginView from "./components/LoginView.tsx";
 
 function App() {
 
@@ -12,7 +13,9 @@ function App() {
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Routes>
                     <Route path="/" element={<BoardList />} />
-                    <Route path="/board/:boardId" element={<ParticipantList />} />
+                    <Route path="/login" element={<LoginView />} />
+                    <Route path="/register" element={<LoginView />} />
+                    <Route path="/board/:boardId" element={<BoardView />} />
                     <Route path="/about" element={<p>/about</p>} />
                 </Routes>
             </LocalizationProvider>
@@ -22,11 +25,3 @@ function App() {
 }
 
 export default App
-
-/*
-*         <Router>
-            <Route exact path="/" element={BoardList}/>
-            <Route path="/new-page/:boardId"
-                   element={(props) => <ParticipantList boardId={props}/>}/>
-        </Router>
-*/

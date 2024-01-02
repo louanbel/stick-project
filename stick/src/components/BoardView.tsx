@@ -1,9 +1,9 @@
 import {Participant} from "../types/Participant";
-import '../styles/ParticipantList.scss';
+import '../styles/BoardView.scss';
 import {useEffect, useState} from "react";
 import {fetchBoard} from "../helpers/boardHelper";
 import {Board} from "../types/Board";
-import {useParams} from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import dayjs from "dayjs";
 import FlipMove from "react-flip-move";
 import BCheckbox from "./BCheckbox";
@@ -13,19 +13,22 @@ import AddParticipantModal from "./modal/AddParticipantModal";
 import DeleteParticipantModal from "./modal/DeleteParticipantModal";
 import FlipClockCountdown from '@leenguyen/react-flip-clock-countdown';
 import '@leenguyen/react-flip-clock-countdown/dist/index.css';
+import {IoArrowBackOutline} from "react-icons/io5";
+import axios from "axios";
 
-export default function ParticipantList() {
+export default function BoardView() {
     const [isBoardLoaded, setIsBoardLoaded] = useState(false);
     const [isAddParticipantModalOpen, setIsAddParticipantModalOpen] = useState(false);
-    const [selectedParticipantList, setSelectedParticipantList] = useState([]);
+    const [selectedParticipantList, setSelectedParticipantList] = useState<Participant[]>([]);
     const [isDeleteParticipantModalOpen, setIsDeleteParticipantModalOpen] = useState(false);
     const [board, setBoard] = useState<Board | null>(null);
     const [isTimesUp, setIsTimesUp] = useState(false);
     const {boardId} = useParams();
+    const navigate = useNavigate();
 
     useEffect(
         () => {
-            if (!isBoardLoaded) {
+            if (!isBoardLoaded && boardId != undefined) {
                 console.log("fetching board");
                 fetchBoard(boardId).then((board) => {
                     setBoard(board);
@@ -41,29 +44,37 @@ export default function ParticipantList() {
     }, [selectedParticipantList]);
 
     useEffect(() => {
-        if (isBoardLoaded) {
-            const updateData = async () => {
-                try {
-                    const response = await fetch(`http://127.0.0.1:5000/board/update-participants/${board?.id}`, {
-                        method: 'PUT',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify(board?.participants),
-                    });
+            if (isBoardLoaded) {
+                const updateData = async () => {
+                        try {
+                            const response = await axios.put(`http://127.0.0.1:5000/board/update-participants/${board?.id}`,
+                                JSON.stringify(board?.participants),
+                                {
+                                    headers: {
+                                        'Content-Type': 'application/json',
+                                        "Authorization": `Bearer ${localStorage.getItem('access_token')}`
+                                    }
+                                }
+                            );
 
-                    if (response.ok) {
-                        console.log('The board was saved successfully : ', response.json());
-                    } else {
-                        console.error('Failed to save the board data : ', response.json());
+                            if (response.status == 200) {
+                                console.log('The board was saved successfully : ', response.data);
+                            } else {
+                                console.error('Failed to save the board data : ', response.data);
+                            }
+                        } catch
+                            (error) {
+                            console.error('Error while saving board data:', error);
+                        }
                     }
-                } catch (error) {
-                    console.error('Error while saving board data:', error);
-                }
-            };
-            updateData();
+                ;
+                updateData();
+            }
         }
-    }, [isBoardLoaded, board]);
+        ,
+        [isBoardLoaded, board]
+    )
+    ;
 
     function handleDeleteParticipantButton() {
         if (selectedParticipantList.length > 0) {
@@ -187,9 +198,11 @@ export default function ParticipantList() {
             <h2>{board?.name}</h2>
             {board &&
             <div className="endTime">
-                <p>Time remaining :</p>
+                <div className="endTimeLabel">
+                    <p>Time remaining :</p>
+                    {isTimesUp && <p className="timesUpLabel">Time is up !</p>}
+                </div>
                 <FlipClockCountdown to={dayjs(board?.endTime).valueOf()} onComplete={() => handleOnBoardTimesUp()}/>
-                {isTimesUp && <p>Time is up !</p>}
             </div>}
             <FlipMove className="participantList">
                 {board?.participants.map((p, i) => (

@@ -4,8 +4,6 @@ import BButton from "./BButton";
 import {IoSearchOutline, IoTrash} from "react-icons/io5";
 import {convertTimestampFormat} from "../helpers/dateHelper";
 import {useNavigate} from 'react-router-dom';
-import {useState} from "react";
-import DeleteBoardModal from "./modal/DeleteBoardModal";
 
 type BoardCardProps = {
     board: PartialBoard;
