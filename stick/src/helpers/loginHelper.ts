@@ -1,4 +1,5 @@
 import axios from 'axios';
+import {LoginResponse, LoginStatus} from "../types/LoginResponse.ts";
 
 export const logoutUser = async () => {
     try {
@@ -53,7 +54,7 @@ export const loginUser = async (signal: AbortSignal, email: string, password: st
     }
 };
 
-export const registerUser = async (signal: AbortSignal, email: string, password: string) => {
+export const registerUser = async (signal: AbortSignal, email: string, password: string): Promise<LoginResponse> => {
     try {
         const response = await axios.post('http://127.0.0.1:5000/register', {
             signal: signal,
@@ -64,15 +65,25 @@ export const registerUser = async (signal: AbortSignal, email: string, password:
         if (response.status === 201) {
             console.log('Successfully registered');
             // Log in the user
-            await loginUser(signal, email, password);
-        } else {
-            console.log("Error while registering:", response.data.msg);
+            let isLogged = await loginUser(signal, email, password);
+            if (isLogged) {
+                return new LoginResponse(LoginStatus.SUCCESS, 'Successfully registered. Redirecting...');
+            } else {
+                return new LoginResponse(LoginStatus.FAILURE, 'Error while logging in after registration. Please retry.');
+            }
         }
+        else if (response.status === 409) {
+            console.log('Email already exists');
+            return new LoginResponse(LoginStatus.FAILURE, 'Email already used. Please choose another email.');
+        }
+        console.log("Error while registering:", response.data.msg);
+        return new LoginResponse(LoginStatus.FAILURE, 'Error while registering. Please retry later.');
     } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
             console.log('Server error while registering:', error.response.data.msg);
         } else {
             console.log("Unexpected error while registering:", error);
         }
+        return new LoginResponse(LoginStatus.FAILURE, 'Unexpected error while registering. Please retry later.');
     }
 };

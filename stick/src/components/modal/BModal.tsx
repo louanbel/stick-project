@@ -6,6 +6,7 @@ import {useEffect} from "react";
 type BModalProps = {
     handleFirstAction: () => void;
     handleSecondAction: () => void;
+    width?: number;
     title: string;
     firstActionLabel: string;
     secondActionLabel?: string;
@@ -13,7 +14,18 @@ type BModalProps = {
 }
 
 
-export default function BModal({handleFirstAction, handleSecondAction, title, firstActionLabel, secondActionLabel, children}: BModalProps) {
+export default function BModal({
+                                   handleFirstAction,
+                                   handleSecondAction,
+                                   width,
+                                   title,
+                                   firstActionLabel,
+                                   secondActionLabel,
+                                   children
+                               }: BModalProps) {
+    const modalStyle = width && {
+        width: `${width}%`,
+    };
 
     useEffect(() => {
         document.body.style.overflow = 'hidden';
@@ -37,11 +49,11 @@ export default function BModal({handleFirstAction, handleSecondAction, title, fi
             <div className="modalBackground">
             </div>
 
-            <div className="modal">
+            <div className="modal" style={modalStyle}>
                 <h2>{title}</h2>
                 {children}
                 <div className="actions" onKeyDown={handleKeyPress}>
-                    <BButton second onClick={handleSecondAction} >{secondActionLabel || "Cancel"}</BButton>
+                    <BButton second onClick={handleSecondAction}>{secondActionLabel || "Cancel"}</BButton>
                     <BButton first onClick={handleFirstAction}>{firstActionLabel}</BButton>
                 </div>
             </div>

@@ -1,4 +1,4 @@
-.email, .password {
+.email, .password, .repeatedPassword {
   display: flex;
   flex-direction: column;
   width: 50%;
@@ -8,10 +8,17 @@ h1 {
   margin: 0;
 }
 
-.error {
-  color: red;
+.error, .success {
   font-size: 16px;
   margin: 0;
+}
+
+.error {
+  color: red;
+}
+
+.success {
+  color: green;
 }
 
 .loginForm {
@@ -20,6 +27,7 @@ h1 {
   flex-direction: column;
   gap: 15px;
   align-items: flex-start;
+
   .loginLabel {
     margin: 0 0 15px 0;
   }
@@ -29,7 +37,23 @@ h1 {
     border: 1px solid #e5e7eb;
     border-radius: 5px;
     padding: 10px 12px;
-    font-family: 'Gordita',  sans-serif;
+    font-family: 'Gordita', sans-serif;
     font-size: 16px;
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .loginAction {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+
+      * {
+        height: fit-content;
+      }
+    }
   }
 }
