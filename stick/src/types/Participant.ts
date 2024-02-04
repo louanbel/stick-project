@@ -14,7 +14,9 @@ export class Participant {
     public points: number;
     public avatar: AvatarSettings;
 
-    constructor(name: string, points: number = 1, id?: number) {
+    static skeletonParticipant(): Participant {
+        return new Participant("Fake name", 1, new AvatarSettings(defaultAvatarSettings), -1);
+    }
 
     constructor(name: string, points: number = 1, avatar: AvatarSettings, id?: number) {
         this.avatar = avatar;

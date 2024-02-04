@@ -16,6 +16,10 @@ abstract class AbstractBoard {
 export class Board extends AbstractBoard {
     public participants: Participant[];
 
+    static skeletonPartialBoard(): PartialBoard {
+        return new PartialBoard(-1, "Fake's board", "Thu, 07 Dec 2023 10:21:24 GMT", 1);
+    }
+
     constructor(id: number, name: string, endTime: string, participants: Participant[]) {
         super(id, name, endTime);
         this.participants = participants;
