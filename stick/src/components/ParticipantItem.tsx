@@ -1,8 +1,8 @@
-import {generateAvatar} from "../helpers/participantHelper";
 import {Participant} from "../types/Participant";
 import PointListItem from "./PointListItem";
 import '../styles/ParticipantItem.scss';
 import {IoAddCircleOutline, IoRemoveCircleOutline} from "react-icons/io5";
+import {generateAvatarFromSettings} from "../helpers/avatarHelper.ts";
 
 type ParticipantItemProps = {
     participant: Participant
@@ -25,7 +25,7 @@ export default function ParticipantItem({participant, onUpdate}: ParticipantItem
 
     return (
         <div className='participantItem'>
-            <img src={generateAvatar(participant.name)} alt={`Avatar of ${participant.name}`}/>
+            <img src={generateAvatarFromSettings(participant.avatar.settings)} alt={`Avatar of ${participant.name}`}/>
             <span className="participantName">{participant.name}</span>
             <IoRemoveCircleOutline disabled={participant.points == 0} className="deletePointButton"
                                    onClick={handleDecreasePoints}/>

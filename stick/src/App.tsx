@@ -1,12 +1,11 @@
 import './App.css'
-import BoardList from "./components/BoardList";
-import BoardView from "./components/BoardView.tsx";
+import BoardListView from "./components/views/BoardListView.tsx";
+import BoardView from "./components/views/BoardView.tsx";
 import { Routes, Route } from 'react-router-dom';
 import {AdapterDayjs} from "@mui/x-date-pickers/AdapterDayjs";
 import {LocalizationProvider} from "@mui/x-date-pickers";
-import LoginView from "./components/LoginView.tsx";
-import React from "react";
-import RegisterView from "./components/RegisterView.tsx";
+import LoginView from "./components/views/LoginView.tsx";
+import RegisterView from "./components/views/RegisterView.tsx";
 
 function App() {
 
@@ -14,7 +13,7 @@ function App() {
         <>
             <LocalizationProvider dateAdapter={AdapterDayjs}>
                 <Routes>
-                    <Route path="/" element={<BoardList />} />
+                    <Route path="/" element={<BoardListView />} />
                     <Route path="/login" element={<LoginView />} />
                     <Route path="/register" element={<RegisterView />} />
                     <Route path="/board/:boardId" element={<BoardView />} />

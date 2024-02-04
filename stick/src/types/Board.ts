@@ -20,6 +20,7 @@ export class Board extends AbstractBoard {
         super(id, name, endTime);
         this.participants = participants;
     }
+
 }
 
 export class PartialBoard extends AbstractBoard {
@@ -30,5 +31,4 @@ export class PartialBoard extends AbstractBoard {
         this.participantCount = participantCount;
     }
 
-    mocks
 }

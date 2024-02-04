@@ -1,0 +1,34 @@
+.modal {
+  // justify-content: space-between;
+  // max-height: 50%;
+  .test {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+  .itemList {
+    display: flex;
+    list-style: none;
+    flex-wrap: wrap;
+  }
+  .avatarStyle {
+    align-self: flex-start;
+    height: 100%;
+    width: 75%;
+    //overflow: scroll;
+  }
+  .previewAvatar {
+    margin: auto;
+  }
+  .participantNameSection {
+    width: 200px;
+    max-width: 90%;
+    margin: auto;
+  }
+  .tabPanelTitle {
+    margin: 0;
+    padding: 0;
+  }
+}

@@ -1,6 +1,15 @@
 import axios from 'axios';
 import {LoginResponse, LoginStatus} from "../types/LoginResponse.ts";
 
+export function isTokenExpired(): boolean {
+    const token = localStorage.getItem('access_token');
+    if (token === null) {
+        return true;
+    }
+    const tokenData = JSON.parse(atob(token.split('.')[1]));
+    return tokenData.exp * 1000 < Date.now();
+}
+
 export const logoutUser = async () => {
     try {
         const response = await axios.post('http://127.0.0.1:5000/logout', {}, {
@@ -71,8 +80,7 @@ export const registerUser = async (signal: AbortSignal, email: string, password:
             } else {
                 return new LoginResponse(LoginStatus.FAILURE, 'Error while logging in after registration. Please retry.');
             }
-        }
-        else if (response.status === 409) {
+        } else if (response.status === 409) {
             console.log('Email already exists');
             return new LoginResponse(LoginStatus.FAILURE, 'Email already used. Please choose another email.');
         }

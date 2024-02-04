@@ -1,9 +1,9 @@
 import {useEffect, useState} from "react";
-import '../styles/RegisterView.scss';
-import BButton from "./BButton.tsx";
-import {registerUser} from "../helpers/loginHelper.ts";
+import '../../styles/RegisterView.scss';
+import BButton from "../BButton.tsx";
+import {registerUser} from "../../helpers/loginHelper.ts";
 import {useNavigate} from "react-router-dom";
-import {LoginResponse, LoginStatus} from "../types/LoginResponse.ts";
+import {LoginResponse, LoginStatus} from "../../types/LoginResponse.ts";
 
 
 export default function RegisterView() {

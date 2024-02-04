@@ -5,6 +5,7 @@ import {Board} from "../../types/Board";
 import {DateTimePicker} from "@mui/x-date-pickers";
 import dayjs from "dayjs";
 import {FormControlLabel, Switch} from "@mui/material";
+import axios from "axios";
 
 type BCreateBoardModalProps = {
     className: string;
@@ -33,23 +34,23 @@ export default function CreateBoardModal({className, handleCancelAction, handleC
         if (boardNameInput.length > 0 && ((!isPastError && !isEndDateTimeNullError) || isUnlimitedDuration)) {
             const createBoard = async () => {
                 try {
-                    const response = await fetch(`http://127.0.0.1:5000/board/create`, {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
+                    const response = await axios.post(`http://127.0.0.1:5000/board/create`, JSON.stringify({
                             name: boardNameInput,
                             endTime: !isUnlimitedDuration ? endDateTime.format('YYYY-MM-DD HH:mm:ss') : null,
                         }),
-                    });
+                        {
+                            headers: {
+                                'Content-Type': 'application/json',
+                                "Authorization": `Bearer ${localStorage.getItem('access_token')}`
+                            },
+                        });
 
-                    if (response.ok) {
-                        const data = await response.json();
+                    if (response.status === 200) {
+                        const data = await response.data;
                         console.log('The board was saved successfully : ', data);
                         handleCreateBoard(new Board(data.id, data.name, data.endTime, data.participants));
                     } else {
-                        console.error('Failed to save the board data : ', response.json());
+                        console.error('Failed to save the board data : ', response.data);
                     }
 
 
@@ -98,11 +99,10 @@ export default function CreateBoardModal({className, handleCancelAction, handleC
                     <label htmlFor="endTimeInput">Board end date</label>
                     {!isUnlimitedDuration &&
                         <>
-                            <DateTimePicker
-                                hidden={isUnlimitedDuration}
-                                id="endTimeInput"
-                                value={endDateTime}
-                                onChange={(dateTime) => handleOnDateTimeChange(dateTime)}/>
+                            {!isUnlimitedDuration &&
+                                <DateTimePicker
+                                    value={endDateTime}
+                                    onChange={(dateTime) => handleOnDateTimeChange(dateTime)}/>}
                             {isPastError && <span className="inputError">The end date can't be in the past !</span>}
                             {isEndDateTimeNullError && <span className="inputError">The end date can't be unset !</span>
                             }

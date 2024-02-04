@@ -1,9 +1,8 @@
 import {useEffect, useState} from "react";
-import '../styles/LoginView.scss';
-import BButton from "./BButton.tsx";
-import {loginUser} from "../helpers/loginHelper.ts";
+import '../../styles/LoginView.scss';
+import BButton from "../BButton.tsx";
+import {loginUser} from "../../helpers/loginHelper.ts";
 import {useNavigate} from "react-router-dom";
-import {Skeleton} from "@mui/material";
 
 
 export default function LoginView() {

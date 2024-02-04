@@ -7,6 +7,7 @@ type BModalProps = {
     handleFirstAction: () => void;
     handleSecondAction: () => void;
     width?: number;
+    height?: number;
     title: string;
     firstActionLabel: string;
     secondActionLabel?: string;
@@ -18,13 +19,19 @@ export default function BModal({
                                    handleFirstAction,
                                    handleSecondAction,
                                    width,
+                                   height,
                                    title,
                                    firstActionLabel,
                                    secondActionLabel,
                                    children
                                }: BModalProps) {
-    const modalStyle = width && {
-        width: `${width}%`,
+    let modalStyle = {
+        ...(width && {
+            width: `${width}%`
+        }),
+        ...(height && {
+            height: `${height}%`
+        }),
     };
 
     useEffect(() => {
