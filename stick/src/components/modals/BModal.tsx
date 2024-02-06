@@ -12,6 +12,7 @@ type BModalProps = {
     firstActionLabel: string;
     secondActionLabel?: string;
     children?: React.ReactNode;
+    isLoading?: boolean;
 }
 
 
@@ -23,8 +24,10 @@ export default function BModal({
                                    title,
                                    firstActionLabel,
                                    secondActionLabel,
-                                   children
+                                   children,
+                                   isLoading
                                }: BModalProps) {
+
     let modalStyle = {
         ...(width && {
             width: `${width}%`
@@ -60,8 +63,12 @@ export default function BModal({
                 <h2>{title}</h2>
                 {children}
                 <div className="actions" onKeyDown={handleKeyPress}>
-                    <BButton second onClick={handleSecondAction}>{secondActionLabel || "Cancel"}</BButton>
-                    <BButton first onClick={handleFirstAction}>{firstActionLabel}</BButton>
+                    <BButton disabled={isLoading} second
+                             onClick={handleSecondAction}>{secondActionLabel || "Cancel"}</BButton>
+                    <BButton first
+                             isLoading={isLoading}
+                             onClick={handleFirstAction}>{firstActionLabel}
+                    </BButton>
                 </div>
             </div>
         </>

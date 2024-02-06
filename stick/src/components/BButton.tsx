@@ -1,5 +1,6 @@
 import '../styles/BButton.scss';
 import * as React from "react";
+import {AiOutlineLoading3Quarters} from "react-icons/ai";
 
 type BButtonProps = {
     first?: boolean;
@@ -9,9 +10,10 @@ type BButtonProps = {
     children?: React.ReactNode;
     onClick: () => void;
     disabled?: boolean;
+    isLoading?: boolean;
 }
 
-export default function BButton({first, second, red, children, onClick, disabled, submit}: BButtonProps) {
+export default function BButton({first, second, red, children, onClick, disabled, submit, isLoading}: BButtonProps) {
     const styles = [
         first && "first",
         second && "second",
@@ -21,7 +23,10 @@ export default function BButton({first, second, red, children, onClick, disabled
     return (
         <>
             <button type={!!submit ? 'submit' : 'button'}
-                    disabled={!!disabled} className={styles} onClick={onClick}>{children}</button>
+                    disabled={!!disabled || isLoading} className={styles} onClick={onClick}>
+                <div className={isLoading ? "hideChildren" : ""}>{children}</div>
+                {isLoading && <div className="loading"><AiOutlineLoading3Quarters/></div>}
+            </button>
         </>
     )
 }

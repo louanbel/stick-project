@@ -56,10 +56,10 @@ export async function deleteParticipant(participantId: number): Promise<void> {
 
 }
 
-export async function addParticipant(participant: Participant, boardId?: number): Promise<void> {
+export async function addParticipant(participant: Participant, boardId?: number): Promise<number> {
     if (boardId === undefined) {
         console.error("Trying to add a participant with an undefined boardId");
-        return;
+        throw new Error("BoardId is undefined boardId");
     }
 
     try {
@@ -72,11 +72,14 @@ export async function addParticipant(participant: Participant, boardId?: number)
 
         if (response.status == 200) {
             console.log(`The participant ${participant} was saved successfully :`, response.data);
+            return response.data.id;
         } else {
             console.error(`Failed to save the new participant ${participant} : `, response.data);
+            throw new Error(`Failed to save the new participant ${participant} : ${response.data}`);
         }
     } catch (error) {
         console.error(`Error while add the participant ${participant} board data:`, error);
+        throw error;
     }
 }
 

@@ -21,6 +21,7 @@ export default function CreateBoardModal({className, handleCancelAction, handleC
     const [isBoardNameError, setIsBoardNameError] = useState(false);
     const [isPastError, setIsPastError] = useState(false);
     const [isEndDateTimeNullError, setIsEndDateTimeNullError] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
 
     function handleCreateBoardModal(): void {
         setIsBoardNameError(boardNameInput.length <= 0);
@@ -34,6 +35,7 @@ export default function CreateBoardModal({className, handleCancelAction, handleC
         if (boardNameInput.length > 0 && ((!isPastError && !isEndDateTimeNullError) || isUnlimitedDuration)) {
             const createBoard = async () => {
                 try {
+                    setIsLoading(true);
                     const response = await axios.post(`http://127.0.0.1:5000/board/create`, JSON.stringify({
                             name: boardNameInput,
                             endTime: !isUnlimitedDuration ? endDateTime.format('YYYY-MM-DD HH:mm:ss') : null,
@@ -57,8 +59,9 @@ export default function CreateBoardModal({className, handleCancelAction, handleC
                 } catch (error) {
                     console.error('Error while saving board data:', error);
                 }
+
             };
-            createBoard();
+            createBoard().then(() => setIsLoading(false));
 
         }
     }
@@ -73,7 +76,7 @@ export default function CreateBoardModal({className, handleCancelAction, handleC
         handleCancelAction();
     }
 
-    function handleOnDateTimeChange(dateTime) {
+    function handleOnDateTimeChange(dateTime: any) {
         if (dateTime.valueOf() <= dayjs().valueOf()) {
             setIsPastError(true);
         } else {
@@ -85,7 +88,7 @@ export default function CreateBoardModal({className, handleCancelAction, handleC
 
     return (
         <div className={className}>
-            <BModal handleFirstAction={handleCreateBoardModal} handleSecondAction={handleCancelModal}
+            <BModal handleFirstAction={handleCreateBoardModal} handleSecondAction={handleCancelModal} isLoading={isLoading}
                     title={"Create a new board"} firstActionLabel={"Create"}>
                 <div className="section nameSection">
                     <label htmlFor="nameInput">Board name</label>

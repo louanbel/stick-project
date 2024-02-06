@@ -1,6 +1,8 @@
 import '../../styles/modal/BModal.scss';
 import {Participant} from "../../types/Participant";
 import BModal from "./BModal";
+import {useState} from "react";
+import {deleteParticipants} from "../../helpers/boardHelper.ts";
 
 type DeleteModalProps = {
     className: string;
@@ -16,10 +18,21 @@ export default function DeleteParticipantModal({
                                                    handleCancelAction,
                                                    handleValidateAction
                                                }: DeleteModalProps) {
+    const [isLoading, setIsLoading] = useState(false);
+
+    function deleteParticipant() {
+        setIsLoading(true);
+        const participantIds = participants.map(participant => participant.id);
+        deleteParticipants(participantIds).then(() => {
+            handleValidateAction();
+            setIsLoading(false);
+        });
+    }
 
     return (
         <div className={className}>
-            <BModal handleFirstAction={handleValidateAction} handleSecondAction={handleCancelAction}
+            <BModal handleFirstAction={deleteParticipant} handleSecondAction={handleCancelAction}
+                    isLoading={isLoading}
                     title={`Delete ${participants.length} participant${participants.length > 1 ? "s" : ''}`}
                     firstActionLabel={"Delete"}>
                 <div className="nameSection">

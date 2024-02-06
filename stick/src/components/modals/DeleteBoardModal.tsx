@@ -1,7 +1,8 @@
 import '../../styles/modal/BModal.scss';
 import BModal from "./BModal";
-import {Board, PartialBoard} from "../../types/Board";
+import {PartialBoard} from "../../types/Board";
 import axios from "axios";
+import {useState} from "react";
 
 type DeleteModalProps = {
     board: PartialBoard;
@@ -15,10 +16,12 @@ export default function DeleteBoardModal({
                                              handleCancelAction,
                                              handleValidateAction
                                          }: DeleteModalProps) {
+    const [isLoading, setIsLoading] = useState(false);
 
     function deleteBoard() {
         const deleteData = async () => {
             try {
+                setIsLoading(true);
                 const response = await axios.delete(`http://127.0.0.1:5000/boards/delete/${board?.id}`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
@@ -35,13 +38,17 @@ export default function DeleteBoardModal({
                 console.error(`Error while deleting the participant with id ${board.id} :`, error);
             }
         };
-        deleteData();
-        handleValidateAction();
+        deleteData().then(() => {
+            setIsLoading(false);
+            handleValidateAction();
+        });
+
     }
 
     return (
         <>
             <BModal handleFirstAction={deleteBoard} handleSecondAction={handleCancelAction}
+                    isLoading={isLoading}
                     title={`Delete board "${board.name}"`}
                     firstActionLabel={"Delete"}>
                 <div className="section">

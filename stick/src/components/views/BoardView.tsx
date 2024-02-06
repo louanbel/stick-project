@@ -1,7 +1,7 @@
 import {Participant} from "../../types/Participant.ts";
 import '../../styles/BoardView.scss';
 import {useEffect, useRef, useState} from "react";
-import {addParticipant, deleteParticipants, fetchBoard, updateBoard} from "../../helpers/boardHelper.ts";
+import {fetchBoard, updateBoard} from "../../helpers/boardHelper.ts";
 import {Board} from "../../types/Board.ts";
 import {useNavigate, useParams} from 'react-router-dom';
 import dayjs from "dayjs";
@@ -71,18 +71,16 @@ export default function BoardView() {
         setIsAddParticipantModalOpen(!isAddParticipantModalOpen);
     }
 
-    function handleAddParticipantModal(participant: Participant) {
-        addParticipant(participant, board?.id).then(() => {
-            const newParticipantList = board
-                ? [...board.participants, participant].sort((a, b) => b.points - a.points)
-                : [participant];
+    function handleAddParticipantModal(newParticipant: Participant) {
+        const newParticipantList = board
+            ? [...board.participants, newParticipant].sort((a, b) => b.points - a.points)
+            : [newParticipant];
 
-            const updatedBoard = board ? {...board, participants: newParticipantList} : null;
+        const updatedBoard = board ? {...board, participants: newParticipantList} : null;
 
-            setBoard(updatedBoard);
-            setIsAddParticipantModalOpen(false);
-            setHasBoardUpdated(true);
-        });
+        setBoard(updatedBoard);
+        setIsAddParticipantModalOpen(false);
+        setHasBoardUpdated(true);
     }
 
     function handleCancelAddParticipantModal() {
@@ -95,15 +93,13 @@ export default function BoardView() {
 
     function handleValidateDeleteParticipantModal() {
         const participantsIdToDelete = selectedParticipantList.map(p => p.id);
-        deleteParticipants(participantsIdToDelete).then(_ => {
-                const newParticipantList = board
-                    ? board.participants.filter((p) => !participantsIdToDelete.includes(p.id))
-                    : [];
-                const updatedBoard = board ? {...board, participants: newParticipantList} : null;
-                setBoard(updatedBoard);
-                setIsDeleteParticipantModalOpen(false);
-            }
-        );
+        const newParticipantList = board
+            ? board.participants.filter((p) => !participantsIdToDelete.includes(p.id))
+            : [];
+        const updatedBoard = board ? {...board, participants: newParticipantList} : null;
+        setBoard(updatedBoard);
+        setIsDeleteParticipantModalOpen(false);
+        setSelectedParticipantList([]);
     }
 
     function onParticipantUpdate(updatedParticipant: Participant) {
@@ -190,7 +186,7 @@ export default function BoardView() {
 
             </FlipMove>
             <div className={"boardActions"}>
-                <BButton first onClick={handleAddParticipantButton}>Add</BButton>
+                <BButton first onClick={handleAddParticipantButton}>Add new participant</BButton>
                 <BButton disabled={selectedParticipantList.length <= 0} second
                          onClick={handleDeleteParticipantButton}>Delete</BButton>
             </div>
@@ -198,6 +194,7 @@ export default function BoardView() {
             {
                 isAddParticipantModalOpen &&
                 <AddParticipantModal className="addParticipantModal"
+                                     boardId={board?.id}
                                      handleAddParticipant={handleAddParticipantModal}
                                      handleCancelAction={handleCancelAddParticipantModal}></AddParticipantModal>
             }
