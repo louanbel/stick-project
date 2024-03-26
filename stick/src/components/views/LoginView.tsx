@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import '../../styles/LoginView.scss';
+import '../../styles/views/LoginView.scss';
 import BButton from "../BButton.tsx";
 import {loginUser} from "../../helpers/loginHelper.ts";
 import {useNavigate} from "react-router-dom";

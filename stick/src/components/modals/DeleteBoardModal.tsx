@@ -1,4 +1,4 @@
-import '../../styles/modal/BModal.scss';
+import '../../styles/modals/BModal.scss';
 import BModal from "./BModal";
 import {PartialBoard} from "../../types/Board";
 import axios from "axios";

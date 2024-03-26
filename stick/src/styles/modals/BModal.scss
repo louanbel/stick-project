@@ -7,7 +7,23 @@
   background: black;
   opacity: 0.5;
 }
+.medium {
+  width: 60%;
+  height: 60%;
+}
+.MuiBox-root {
+  padding: 0;
+}
+@media (max-width: 700px) {
+  .medium {
+    width: 80%;
+    height: 80%;
 
+  }
+  .small {
+    width: 60%;
+  }
+}
 .modal {
   position: absolute;
   left: 50%;

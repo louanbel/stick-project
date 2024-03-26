@@ -1,4 +1,4 @@
-import '../../styles/modal/BModal.scss';
+import '../../styles/modals/BModal.scss';
 import {Participant} from "../../types/Participant";
 import BModal from "./BModal";
 import {useState} from "react";
@@ -31,7 +31,7 @@ export default function DeleteParticipantModal({
 
     return (
         <div className={className}>
-            <BModal handleFirstAction={deleteParticipant} handleSecondAction={handleCancelAction}
+            <BModal modalType={"small"} handleFirstAction={deleteParticipant} handleSecondAction={handleCancelAction}
                     isLoading={isLoading}
                     title={`Delete ${participants.length} participant${participants.length > 1 ? "s" : ''}`}
                     firstActionLabel={"Delete"}>

@@ -1,4 +1,4 @@
-import '../../styles/modal/BModal.scss';
+import '../../styles/modals/BModal.scss';
 import {useState} from "react";
 import BModal from "./BModal";
 import {Board} from "../../types/Board";

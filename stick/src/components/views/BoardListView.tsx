@@ -1,4 +1,4 @@
-import '../../styles/BoardList.scss';
+import '../../styles/views/BoardListView.scss';
 import {Board, PartialBoard} from "../../types/Board.ts";
 import BoardCard from "../BoardCard.tsx";
 import {useEffect, useState} from "react";

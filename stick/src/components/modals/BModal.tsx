@@ -1,4 +1,4 @@
-import '../../styles/modal/BModal.scss';
+import '../../styles/modals/BModal.scss';
 import BButton from "../BButton";
 import * as React from "react";
 import {useEffect} from "react";
@@ -6,6 +6,7 @@ import {useEffect} from "react";
 type BModalProps = {
     handleFirstAction: () => void;
     handleSecondAction: () => void;
+    modalType?: "small" | "medium" | "large";
     width?: number;
     height?: number;
     title: string;
@@ -19,8 +20,7 @@ type BModalProps = {
 export default function BModal({
                                    handleFirstAction,
                                    handleSecondAction,
-                                   width,
-                                   height,
+                                   modalType,
                                    title,
                                    firstActionLabel,
                                    secondActionLabel,
@@ -28,14 +28,6 @@ export default function BModal({
                                    isLoading
                                }: BModalProps) {
 
-    let modalStyle = {
-        ...(width && {
-            width: `${width}%`
-        }),
-        ...(height && {
-            height: `${height}%`
-        }),
-    };
 
     useEffect(() => {
         document.body.style.overflow = 'hidden';
@@ -59,7 +51,7 @@ export default function BModal({
             <div className="modalBackground">
             </div>
 
-            <div className="modal" style={modalStyle}>
+            <div className={`modal ${modalType}`}>
                 <h2>{title}</h2>
                 {children}
                 <div className="actions" onKeyDown={handleKeyPress}>

@@ -1,5 +1,5 @@
-import '../../styles/modal/BModal.scss';
-import '../../styles/modal/AddParticipantModal.scss';
+import '../../styles/modals/BModal.scss';
+import '../../styles/modals/AddParticipantModal.scss';
 import {Participant} from "../../types/Participant";
 import {SyntheticEvent, useState} from "react";
 import BModal from "./BModal";
@@ -26,6 +26,7 @@ import {
     Top
 } from "../../helpers/avatarHelper.ts";
 import {addParticipant} from "../../helpers/boardHelper.ts";
+import BButtonDropdown from "../BButtonDropdown.tsx";
 
 interface TabPanelProps {
     children?: React.ReactNode;
@@ -122,7 +123,7 @@ export default function AddParticipantModal({
 
     return (
         <div className={className}>
-            <BModal width={70} height={70} handleFirstAction={handleAddAction} handleSecondAction={handleCancelAction}
+            <BModal modalType={"medium"} handleFirstAction={handleAddAction} handleSecondAction={handleCancelAction}
                     isLoading={isLoading}
                     title={"Add a participant"}
                     firstActionLabel={"Add"}>
@@ -161,7 +162,7 @@ export default function AddParticipantModal({
                             <Tab label="Clothing" sx={{mx: 0.5}}/>
                             <Tab label="Clothes color" sx={{mx: 0.5}}/>
                             <Tab disabled={avatar.settings.clothing != Clothing.GraphicShirt}
-                                 label="Clothing graphic"/>
+                                 label="Clothing graphic" sx={{mx: 0.5}}/>
                             <Tab label="Eyebrows" sx={{mx: 0.5}}/>
                             <Tab label="Eyes" sx={{mx: 0.5}}/>
                             <Tab label="Mouth" sx={{mx: 0.5}}/>

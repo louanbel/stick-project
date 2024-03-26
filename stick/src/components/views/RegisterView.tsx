@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import '../../styles/RegisterView.scss';
+import '../../styles/views/RegisterView.scss';
 import BButton from "../BButton.tsx";
 import {registerUser} from "../../helpers/loginHelper.ts";
 import {useNavigate} from "react-router-dom";

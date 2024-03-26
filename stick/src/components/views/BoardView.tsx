@@ -1,5 +1,5 @@
 import {Participant} from "../../types/Participant.ts";
-import '../../styles/BoardView.scss';
+import '../../styles/views/BoardView.scss';
 import {useEffect, useRef, useState} from "react";
 import {fetchBoard, updateBoard} from "../../helpers/boardHelper.ts";
 import {Board} from "../../types/Board.ts";
@@ -18,6 +18,7 @@ import BHeader from "../BHeader.tsx";
 import ParticipantItemSkeleton from "../ParticipantItemSkeleton.tsx";
 import {Skeleton} from "@mui/material";
 import {isTokenExpired} from "../../helpers/loginHelper.ts";
+import BButtonDropdown from "../BButtonDropdown.tsx";
 
 export default function BoardView() {
     const [isBoardLoaded, setIsBoardLoaded] = useState(false);
@@ -186,6 +187,11 @@ export default function BoardView() {
 
             </FlipMove>
             <div className={"boardActions"}>
+                <BButtonDropdown label={"Select a participant"}
+                                 elements={["Add new participant", "Import existing participant"]}
+                                 handleOnClick={() => {
+                                     console.log("test")
+                                 }} />
                 <BButton first onClick={handleAddParticipantButton}>Add new participant</BButton>
                 <BButton disabled={selectedParticipantList.length <= 0} second
                          onClick={handleDeleteParticipantButton}>Delete</BButton>
