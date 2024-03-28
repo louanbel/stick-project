@@ -1,19 +1,19 @@
 import '../styles/BButtonDropdown.scss';
-import {useEffect, useRef, useState} from "react";
+import {RefObject, useEffect, useRef, useState} from "react";
 
 type BButtonDropdownProps = {
-    label: String;
-    elements: String[];
+    label: string;
+    elements: string[];
     handleOnClick: () => void;
 }
 
-function useOutsideAlerter(ref) {
+function useOutsideAlerter(ref: RefObject<HTMLDivElement>) {
     useEffect(() => {
         /**
          * Alert if clicked on outside of element
          */
-        function handleClickOutside(event) {
-            if (ref.current && !ref.current.contains(event.target)) {
+        function handleClickOutside(event: MouseEvent) {
+            if (ref.current && !ref.current.contains(event.target as Node)) {
                 alert("You clicked outside of me!");
             }
         }
@@ -42,7 +42,7 @@ export default function BButtonDropdown({label, elements, handleOnClick}: BButto
             <div className={"dropdownList"} hidden={!isDropdownListOpen}>
                 {elements.map((element) => {
                     return (
-                        <a href="#">{element}</a>
+                        <a href="#" onClick={handleOnClick}>{element}</a>
                     )
                 })}
             </div>

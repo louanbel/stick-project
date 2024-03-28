@@ -1,5 +1,4 @@
 import '../styles/ParticipantItemSkeleton.scss';
-import {Participant} from "../types/Participant.ts";
 import {Skeleton} from "@mui/material";
 
 export default function ParticipantItemSkeleton() {

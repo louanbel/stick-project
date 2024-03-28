@@ -26,7 +26,6 @@ import {
     Top
 } from "../../helpers/avatarHelper.ts";
 import {addParticipant} from "../../helpers/boardHelper.ts";
-import BButtonDropdown from "../BButtonDropdown.tsx";
 
 interface TabPanelProps {
     children?: React.ReactNode;

@@ -1,12 +1,9 @@
 import '../styles/BHeader.scss';
-import * as React from "react";
 import BButton from "./BButton.tsx";
 import {logoutUser} from "../helpers/loginHelper.ts";
 import {useNavigate} from "react-router-dom";
 
-type BButtonProps = {}
-
-export default function BHeader({}: BButtonProps) {
+export default function BHeader() {
     const navigate = useNavigate();
     function handleLogout() {
         logoutUser().then(() => {
