@@ -4,7 +4,7 @@ type PointListItemProps = {
 }
 
 export default function PointListItem({points}: PointListItemProps) {
-    const pointItems = Array.from({length: points}, (v, index) => (
+    const pointItems = Array.from({length: points}, (_v, index) => (
         <li className="point" key={index}></li>
     ));
 

@@ -1,5 +1,4 @@
 import '../styles/BHeader.scss';
-import * as React from "react";
 import BButton from "./BButton.tsx";
 import {logoutUser} from "../helpers/loginHelper.ts";
 import {useNavigate} from "react-router-dom";
