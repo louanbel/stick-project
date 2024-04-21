@@ -44,7 +44,7 @@ button {
 }
 
 
-.first, .second, .red {
+.first, .second, .red, .yellow {
   display: flex;
   padding: 10px 15px !important;
 
@@ -78,5 +78,15 @@ button {
     color: #f45858;
     border: 1px solid #f45858;
   }
+}
 
+.yellow {
+  background-color: #cd7f32;
+  color: white;
+
+  &:not([disabled]):hover {
+    background-color: transparent;
+    color: #cd7f32;
+    border: 1px solid #cd7f32;
+  }
 }

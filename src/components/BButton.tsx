@@ -6,6 +6,7 @@ type BButtonProps = {
     first?: boolean;
     second?: boolean;
     red?: boolean;
+    yellow?: boolean;
     submit?: boolean;
     children?: React.ReactNode;
     onClick: () => void;
@@ -13,11 +14,12 @@ type BButtonProps = {
     isLoading?: boolean;
 }
 
-export default function BButton({first, second, red, children, onClick, disabled, submit, isLoading}: BButtonProps) {
+export default function BButton({first, second, red, yellow, children, onClick, disabled, submit, isLoading}: BButtonProps) {
     const styles = [
         first && "first",
         second && "second",
-        red && "red"
+        red && "red",
+        yellow && "yellow",
     ].filter(Boolean).join(" ");
 
     return (

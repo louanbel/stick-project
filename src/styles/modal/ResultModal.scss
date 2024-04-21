@@ -1,0 +1,158 @@
+.scoreboard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+
+  .resultSection {
+    width: 70%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-top: 20px;
+
+    > * {
+      width: 33%;
+      text-align: center;
+      padding: 5px;
+      font-size: 20px;
+    }
+
+    .firstParticipant {
+      .winnerProfile {
+        span {
+          display: inline-block;
+          max-width: 100%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        span > * {
+          font-size: 1em;
+          white-space: nowrap;
+        }
+      }
+
+      .podium {
+        color: white;
+        padding: 5px;
+        background-color: #213547;
+        height: 200px;
+      }
+    }
+
+    .thirdParticipant {
+      .winnerProfile {
+        span {
+          display: inline-block;
+          max-width: 100%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        span > * {
+          font-size: 1em;
+          white-space: nowrap;
+        }
+      }
+
+      .podium {
+        color: white;
+        padding: 5px;
+        background-color: #213547;
+        height: 150px;
+      }
+    }
+
+    .secondParticipant {
+      .winnerProfile {
+        span {
+          display: inline-block;
+          max-width: 100%;
+          white-space: nowrap;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+
+        span > * {
+          font-size: 1em;
+          white-space: nowrap;
+        }
+      }
+
+      .podium {
+        color: white;
+        padding: 5px;
+        background-color: #213547;
+        height: 170px;
+      }
+    }
+  }
+
+  .otherParticipants {
+    max-height: 30vh;
+    overflow-y: auto;
+    width: 70%;
+    display: flex;
+    gap: 10px;
+    flex-direction: column;
+
+    .participant {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      border-radius: 7px;
+
+      .profileSection {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+      }
+
+      img {
+        width: 60px;
+        height: 100%;
+      }
+    }
+  }
+
+}
+
+@media (max-width: 600px) {
+  .scoreboard .resultSection {
+    width: 90%;
+  }
+}
+
+@media (max-width: 500px) {
+  .scoreboard .otherParticipants {
+    width: 90%;
+  }
+}
+
+@media (max-width: 500px) {
+  .scoreboard {
+    .otherParticipants {
+      max-height: 25vh;
+    }
+
+    .resultSection {
+
+      .firstParticipant .podium {
+        height: 80px;
+      }
+
+      .secondParticipant .podium {
+        height: 60px;
+      }
+
+      .thirdParticipant .podium {
+        height: 40px;
+      }
+    }
+  }
+}

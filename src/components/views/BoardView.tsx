@@ -18,12 +18,14 @@ import BHeader from "../BHeader.tsx";
 import ParticipantItemSkeleton from "../ParticipantItemSkeleton.tsx";
 import {Skeleton} from "@mui/material";
 import {isTokenExpired} from "../../helpers/loginHelper.ts";
+import ResultModal from "../modals/ResultModal.tsx";
 
 export default function BoardView() {
     const [isBoardLoaded, setIsBoardLoaded] = useState(false);
     const [isAddParticipantModalOpen, setIsAddParticipantModalOpen] = useState(false);
     const [selectedParticipantList, setSelectedParticipantList] = useState<Participant[]>([]);
     const [isDeleteParticipantModalOpen, setIsDeleteParticipantModalOpen] = useState(false);
+    const [isResultModalOpen, setIsResultModalOpenOpen] = useState(false);
     const [board, setBoard] = useState<Board | null>(null);
     const [isTimesUp, setIsTimesUp] = useState(false);
     const {boardId} = useParams();
@@ -144,6 +146,10 @@ export default function BoardView() {
         navigate(-1);
     }
 
+    function handleSeeResult() {
+        setIsResultModalOpenOpen(true);
+    }
+
     return (
         <>
             <BHeader/>
@@ -154,9 +160,11 @@ export default function BoardView() {
                 <div className="endTimeLabel">
                     <p>Time remaining :</p>
                     {!hasFetchedBoard.current && <Skeleton variant="text" width={100}/>}
-                    {hasFetchedBoard.current && isTimesUp && <p className="timesUpLabel">Time is up !</p>}
+                    {hasFetchedBoard.current && isTimesUp &&
+                        <p className="timesUpLabel"><BButton yellow onClick={handleSeeResult}>See results</BButton></p>}
                 </div>
-                {hasFetchedBoard.current && <FlipClockCountdown to={dayjs(board?.endTime).valueOf()}
+                {hasFetchedBoard.current && <FlipClockCountdown digitBlockStyle={{width: 30, height: 60, fontSize: 30}}
+                                                                to={dayjs(board?.endTime).valueOf()}
                                                                 onComplete={() => handleOnBoardTimesUp()}/>}
             </div>
             <FlipMove className="participantList">
@@ -203,6 +211,12 @@ export default function BoardView() {
                 <DeleteParticipantModal participants={selectedParticipantList} className="deleteParticipantModal"
                                         handleValidateAction={handleValidateDeleteParticipantModal}
                                         handleCancelAction={handleCancelDeleteParticipantModal}></DeleteParticipantModal>
+            }
+            {
+                isResultModalOpen &&
+                <ResultModal participants={board?.participants || []} className="resultModal"
+                             handleValidateAction={() => setIsResultModalOpenOpen(false)}
+                             boardName={board?.name || ''}></ResultModal>
             }
         </>
     )

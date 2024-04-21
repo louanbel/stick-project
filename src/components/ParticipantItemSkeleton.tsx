@@ -9,12 +9,10 @@ export default function ParticipantItemSkeleton() {
                 <Skeleton variant="rectangular" width={20} height={20}/>
                 <Skeleton variant="rectangular" width={20} height={50}/>
                 <Skeleton variant="circular" width={80} height={80}/>
-                <Skeleton variant="text" width={200}/>
+                <Skeleton variant="text" width={125}/>
             </div>
             <div>
-                <Skeleton variant="circular" width={30} height={30}/>
                 <Skeleton variant="rectangular" width={24} height={40}/>
-                <Skeleton variant="circular" width={30} height={30}/>
             </div>
         </div>
     )

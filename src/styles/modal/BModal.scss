@@ -27,9 +27,10 @@
     flex-direction: column;
 
     .formInput {
+      font-size: 16px;
       border: 1px solid #e5e7eb;
       border-radius: 5px;
-      padding: 10px 12px;
+      padding: 15px 16px;
     }
 
     .inputError {
@@ -51,3 +52,10 @@
   }
 }
 
+
+@media (max-width: 800px) {
+  .modal {
+    width: 80%;
+  }
+
+}
