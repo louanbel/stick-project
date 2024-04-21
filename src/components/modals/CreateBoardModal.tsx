@@ -36,7 +36,7 @@ export default function CreateBoardModal({className, handleCancelAction, handleC
             const createBoard = async () => {
                 try {
                     setIsLoading(true);
-                    const response = await axios.post(`https://stick-service.foelij1s8ku6i.eu-west-3.cs.amazonlightsail.com/board/create`, JSON.stringify({
+                    const response = await axios.post(`${import.meta.env.VITE_API_URL}/board/create`, JSON.stringify({
                             name: boardNameInput,
                             endTime: !isUnlimitedDuration ? endDateTime.format('YYYY-MM-DD HH:mm:ss') : null,
                         }),

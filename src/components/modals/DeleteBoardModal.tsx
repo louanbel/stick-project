@@ -22,7 +22,7 @@ export default function DeleteBoardModal({
         const deleteData = async () => {
             try {
                 setIsLoading(true);
-                const response = await axios.delete(`https://stick-service.foelij1s8ku6i.eu-west-3.cs.amazonlightsail.com/boards/delete/${board?.id}`, {
+                const response = await axios.delete(`${import.meta.env.VITE_API_URL}/boards/delete/${board?.id}`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
                         'Content-Type': 'application/json',

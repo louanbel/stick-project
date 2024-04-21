@@ -11,7 +11,7 @@ export async function updateBoard(board?: Board | null) {
             return;
         }
 
-        const response = await axios.put(`https://stick-service.foelij1s8ku6i.eu-west-3.cs.amazonlightsail.com/board/update-participants/${board.id}`,
+        const response = await axios.put(`${import.meta.env.VITE_API_URL}/board/update-participants/${board.id}`,
             JSON.stringify(board.participants),
             {
                 headers: {
@@ -38,7 +38,7 @@ export async function deleteParticipants(participantsIds: number[]): Promise<voi
 
 export async function deleteParticipant(participantId: number): Promise<void> {
     try {
-        const response = await axios.delete(`https://stick-service.foelij1s8ku6i.eu-west-3.cs.amazonlightsail.com/board/delete-participant/${participantId}`,
+        const response = await axios.delete(`${import.meta.env.VITE_API_URL}/board/delete-participant/${participantId}`,
             {
                 headers: {
                     'Authorization': `Bearer ${localStorage.getItem('access_token')}`
@@ -63,7 +63,7 @@ export async function addParticipant(participant: Participant, boardId?: number)
     }
 
     try {
-        const response = await axios.post(`https://stick-service.foelij1s8ku6i.eu-west-3.cs.amazonlightsail.com/board/add-participant/${boardId}`, JSON.stringify(participant), {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/board/add-participant/${boardId}`, JSON.stringify(participant), {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
                 'Content-Type': 'application/json',
@@ -85,7 +85,7 @@ export async function addParticipant(participant: Participant, boardId?: number)
 
 export async function fetchPartialBoardList(): Promise<PartialBoard[]> {
     try {
-        const response = await axios.get("https://stick-service.foelij1s8ku6i.eu-west-3.cs.amazonlightsail.com/partialBoards", {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/partialBoards`, {
                 headers: {
                     "Authorization": `Bearer ${localStorage.getItem('access_token')}`
                 },
@@ -107,7 +107,7 @@ export async function fetchPartialBoardList(): Promise<PartialBoard[]> {
 
 export async function fetchBoard(boardId: string): Promise<Board> {
     try {
-        const response = await axios.get(`https://stick-service.foelij1s8ku6i.eu-west-3.cs.amazonlightsail.com/boards/${boardId}`, {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/boards/${boardId}`, {
             headers: {
                 "Authorization": `Bearer ${localStorage.getItem('access_token')}`
             }

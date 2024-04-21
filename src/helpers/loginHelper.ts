@@ -12,7 +12,7 @@ export function isTokenExpired(): boolean {
 
 export const logoutUser = async () => {
     try {
-        const response = await axios.post('https://stick-service.foelij1s8ku6i.eu-west-3.cs.amazonlightsail.com/logout', {}, {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/logout`, {}, {
             headers: {
                 'Authorization': `Bearer ${localStorage.getItem('access_token')}`
             }
@@ -38,7 +38,7 @@ export const logoutUser = async () => {
 
 export const loginUser = async (signal: AbortSignal, email: string, password: string): Promise<boolean> => {
     try {
-        const response = await axios.post('https://stick-service.foelij1s8ku6i.eu-west-3.cs.amazonlightsail.com/login', {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/login`, {
             signal: signal,
             email,
             password
@@ -65,7 +65,7 @@ export const loginUser = async (signal: AbortSignal, email: string, password: st
 
 export const registerUser = async (signal: AbortSignal, email: string, password: string): Promise<LoginResponse> => {
     try {
-        const response = await axios.post('https://stick-service.foelij1s8ku6i.eu-west-3.cs.amazonlightsail.com/register', {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/register`, {
             signal: signal,
             email,
             password
