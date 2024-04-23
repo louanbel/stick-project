@@ -26,7 +26,8 @@ export default function ParticipantItem({participant, onUpdate}: ParticipantItem
     return (
         <div className='participantItem'>
             <img src={generateAvatarFromSettings(participant.avatar.settings)} alt={`Avatar of ${participant.name}`}/>
-            <span className="participantName">{participant.name}</span>
+            <span
+                className="participantName">{participant.name.length > 12 ? `${participant.name.substring(0, 12)}...` : participant.name}</span>
             <IoRemoveCircleOutline disabled={participant.points == 0} className="deletePointButton"
                                    onClick={handleDecreasePoints}/>
             <PointListItem points={participant.points}/>

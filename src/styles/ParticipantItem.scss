@@ -35,3 +35,16 @@
     }
   }
 }
+
+@media (max-width: 768px) {
+  .participantItem {
+    font-size: 20px;
+    .position {
+        transform: translate(0px, 1px);
+    }
+
+    img {
+      width: 70px;
+    }
+  }
+}
