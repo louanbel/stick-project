@@ -1,0 +1,46 @@
+.buttonDropdown {
+  position: relative;
+  button {
+    display: flex;
+    gap: 2px;
+    &.deployed {
+      .arrow {
+        rotate: 0deg;
+      }
+    }
+    .arrow {
+      rotate: 180deg;
+    }
+  }
+  .dropdownList {
+    padding: 7px;
+    background-color: #e5e7eb;
+    position: absolute;
+    inset: 0 auto auto 0;
+    transform: translate3d(0px, 40px, 0px);
+    display: flex;
+    flex-direction: column;
+    border-radius: 0 0 8px 8px;
+    a {
+      padding: 5px 6px;
+      line-height: normal;
+      color: black !important;
+      &:hover {
+        background-color: #d1d5db;
+      }
+    }
+    &[hidden] {
+      display: none;
+    }
+  }
+
+  button {
+    padding: 10px !important;
+    background-color: #1a1a1a;
+    color: white;
+
+    &.deployed {
+      border-radius: 8px 8px 0 0 !important;
+    }
+  }
+}

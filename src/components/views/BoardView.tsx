@@ -1,7 +1,7 @@
 import {Participant} from "../../types/Participant.ts";
 import '../../styles/BoardView.scss';
 import {useEffect, useRef, useState} from "react";
-import {fetchBoard, updateBoard} from "../../helpers/boardHelper.ts";
+import {addImportedParticipant, fetchBoard, updateBoard} from "../../helpers/boardHelper.ts";
 import {Board} from "../../types/Board.ts";
 import {useNavigate, useParams} from 'react-router-dom';
 import dayjs from "dayjs";
@@ -19,10 +19,13 @@ import ParticipantItemSkeleton from "../ParticipantItemSkeleton.tsx";
 import {Skeleton} from "@mui/material";
 import {isTokenExpired} from "../../helpers/loginHelper.ts";
 import ResultModal from "../modals/ResultModal.tsx";
+import BDropdownButton from "../BDropdownButton.tsx";
+import ImportParticipantModal from "../modals/ImportParticipantModal.tsx";
 
 export default function BoardView() {
     const [isBoardLoaded, setIsBoardLoaded] = useState(false);
     const [isAddParticipantModalOpen, setIsAddParticipantModalOpen] = useState(false);
+    const [isImportParticipantModalOpen, setIsImportParticipantModalOpen] = useState(false);
     const [selectedParticipantList, setSelectedParticipantList] = useState<Participant[]>([]);
     const [isDeleteParticipantModalOpen, setIsDeleteParticipantModalOpen] = useState(false);
     const [isResultModalOpen, setIsResultModalOpenOpen] = useState(false);
@@ -40,8 +43,6 @@ export default function BoardView() {
             navigate('/login');
             return;
         }
-
-        console.log("boardId", boardId);
         if (boardId != undefined && !hasFetchedBoard.current) {
             console.log("Fetching board");
             fetchBoard(boardId).then((board) => {
@@ -150,6 +151,25 @@ export default function BoardView() {
         setIsResultModalOpenOpen(true);
     }
 
+    function handleImportParticipantButton() {
+        setIsImportParticipantModalOpen(!isImportParticipantModalOpen);
+    }
+
+    function handleImportParticipantModal(newParticipant: Participant) {
+
+        addImportedParticipant(newParticipant, board?.id || 0).then((id) => {
+            if(id) {
+                const newParticipantList = board
+                    ? [...board.participants, newParticipant].sort((a, b) => b.points - a.points)
+                    : [newParticipant];
+                const updatedBoard = board ? {...board, participants: newParticipantList} : null;
+                setBoard(updatedBoard);
+                setHasBoardUpdated(true);
+            }
+            setIsImportParticipantModalOpen(false);
+        });
+    }
+
     return (
         <>
             <BHeader/>
@@ -194,7 +214,10 @@ export default function BoardView() {
 
             </FlipMove>
             <div className={"boardActions"}>
-                <BButton first onClick={handleAddParticipantButton}>Add new participant</BButton>
+                <BDropdownButton label={"Select a participant"}
+                                 elements={["Add new participant", "Import existing participant"]}
+                                 handleOnClicks={[handleAddParticipantButton, handleImportParticipantButton]}
+                />
                 <BButton disabled={selectedParticipantList.length <= 0} second
                          onClick={handleDeleteParticipantButton}>Delete</BButton>
             </div>
@@ -217,6 +240,14 @@ export default function BoardView() {
                 <ResultModal participants={board?.participants || []} className="resultModal"
                              handleValidateAction={() => setIsResultModalOpenOpen(false)}
                              boardName={board?.name || ''}></ResultModal>
+            }
+            {
+                isImportParticipantModalOpen &&
+                <ImportParticipantModal className={"importParticipantModal"} handleCancelAction={() => {
+                    setIsImportParticipantModalOpen(false);
+                }} handleImportParticipant={(participant) => {
+                    handleImportParticipantModal(participant);
+                }} boardId={board?.id}></ImportParticipantModal>
             }
         </>
     )

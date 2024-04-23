@@ -88,8 +88,11 @@ export default function CreateBoardModal({className, handleCancelAction, handleC
 
     return (
         <div className={className}>
-            <BModal handleFirstAction={handleCreateBoardModal} handleSecondAction={handleCancelModal} isLoading={isLoading}
-                    title={"Create a new board"} firstActionLabel={"Create"}>
+            <BModal handleFirstAction={handleCreateBoardModal}
+                    handleSecondAction={handleCancelModal}
+                    isLoading={isLoading}
+                    title={"Create a new board"}
+                    firstActionLabel={"Create"}>
                 <div className="section nameSection">
                     <label htmlFor="nameInput">Board name</label>
                     <input className="formInput" type="text" id="nameInput"

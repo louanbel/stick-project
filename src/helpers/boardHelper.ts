@@ -3,6 +3,60 @@ import axios from "axios";
 import {Participant} from "../types/Participant.ts";
 import {AvatarSettings, AvatarSettingsProps, defaultAvatarSettings} from "./avatarHelper.ts";
 
+export async function addImportedParticipant(participant: Participant, boardId: number): Promise<number> {
+    try {
+        const response = await axios.post(`${import.meta.env.VITE_API_URL}/board/add-imported-participant/${boardId}`, {
+            avatar: participant.avatar,
+            name: participant.name,
+            initialBoardId: participant.boardId,
+            initialParticipantId: participant.id
+
+        }, {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('access_token')}`,
+                'Content-Type': 'application/json',
+            },
+        });
+
+        if (response.status == 200) {
+            console.log(`The participant ${participant} was saved successfully :`, response.data);
+            return response.data.id;
+        } else {
+            console.error(`Failed to save the new participant ${participant} : `, response.data);
+            throw new Error(`Failed to save the new participant ${participant} : ${response.data}`);
+        }
+    } catch (error) {
+        console.error(`Error while add the participant ${participant} board data:`, error);
+        throw error;
+    }
+}
+
+export async function fetchAllParticipantOfAUser(boardId: number): Promise<Participant[]> {
+    try {
+        const response = await axios.post(
+            `${import.meta.env.VITE_API_URL}/allParticipants`,
+            {
+                boardId: boardId
+            },
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('access_token')}`
+                }
+            }
+        );
+        return response.data.map((participant: any) => {
+            const avatarSettings = participant.avatarSettings ?
+                new AvatarSettings(participant.avatarSettings as AvatarSettingsProps) :
+                new AvatarSettings(defaultAvatarSettings);
+            return new Participant(participant.name, 1, avatarSettings, participant.id, participant.boardId);
+        });
+    } catch
+        (error) {
+        console.error('Error fetching participant list:', error);
+        throw error;
+    }
+}
 
 export async function updateBoard(board?: Board | null) {
     try {

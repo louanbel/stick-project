@@ -1,0 +1,46 @@
+.modal {
+  .importedParticipants {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(125px, 1fr));
+    gap: 16px;
+    padding: 16px;
+    justify-items: center;
+    overflow: scroll;
+
+    .participantItem {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 9px 7px 0 7px;
+      cursor: pointer;
+      border: 2px solid transparent;
+      &.selected {
+        border: 2px solid #213547;
+        border-radius: 10px;
+      }
+
+      .name {
+        margin-top: 8px;
+        font-size: 20px;
+      }
+
+      .avatar {
+        width: 100px;
+        height: 100px;
+        transition: transform 0.2s ease-in-out;
+      }
+      &:hover, &.selected {
+        .avatar {
+          transform: scale(1.1);
+        }
+      }
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .importParticipantModal .modal {
+    width: 80% !important;
+    height: 90% !important;
+  }
+}
