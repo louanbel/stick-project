@@ -122,7 +122,7 @@ export default function AddParticipantModal({
 
     return (
         <div className={className}>
-            <BModal width={70} height={70} handleFirstAction={handleAddAction} handleSecondAction={handleCancelAction}
+            <BModal width={60} height={60} handleFirstAction={handleAddAction} handleSecondAction={handleCancelAction}
                     isLoading={isLoading}
                     title={"Add a participant"}
                     firstActionLabel={"Add"}>
@@ -155,25 +155,25 @@ export default function AddParticipantModal({
                                 },
                             }}
                         >
-                            <Tab label="Accessories" sx={{mx: 0.5}}/>
+                            <Tab label="Accessories" sx={{mx: 1}}/>
                             <Tab disabled={avatar.settings.accessories == undefined}
-                                 label="Accessories color" sx={{mx: 0.5}}/>
-                            <Tab label="Clothing" sx={{mx: 0.5}}/>
-                            <Tab label="Clothes color" sx={{mx: 0.5}}/>
+                                 label="Accessories color" sx={{mx: 1}}/>
+                            <Tab label="Clothing" sx={{mx: 1}}/>
+                            <Tab label="Clothes color" sx={{mx: 1}}/>
                             <Tab disabled={avatar.settings.clothing != Clothing.GraphicShirt}
                                  label="Clothing graphic"/>
-                            <Tab label="Eyebrows" sx={{mx: 0.5}}/>
-                            <Tab label="Eyes" sx={{mx: 0.5}}/>
-                            <Tab label="Mouth" sx={{mx: 0.5}}/>
-                            <Tab label="Skin color" sx={{mx: 0.5}}/>
-                            <Tab label="Top" sx={{mx: 0.5}}/>
+                            <Tab label="Eyebrows" sx={{mx: 1}}/>
+                            <Tab label="Eyes" sx={{mx: 1}}/>
+                            <Tab label="Mouth" sx={{mx: 1}}/>
+                            <Tab label="Skin color" sx={{mx: 1}}/>
+                            <Tab label="Hair" sx={{mx: 1}}/>
                             <Tab disabled={avatar.settings.top && !Hat.includes(avatar.settings.top)}
-                                 label="Hat color" sx={{mx: 0.5}}/>
+                                 label="Hat color" sx={{mx: 1}}/>
                             <Tab disabled={avatar.settings.top == undefined}
-                                 label="Hair color" sx={{mx: 0.5}}/>
-                            <Tab label="Facial hair" sx={{mx: 0.5}}/>
+                                 label="Hair color" sx={{mx: 1}}/>
+                            <Tab label="Facial hair" sx={{mx: 1}}/>
                             <Tab disabled={avatar.settings.facialHair == undefined}
-                                 label="Facial hair color" sx={{mx: 0.5}}/>
+                                 label="Facial hair color" sx={{mx: 1}}/>
                         </Tabs>
                         <TabPanel value={value} index={0}>
                             <h3 className={"tabPanelTitle"}>Accessories</h3>
