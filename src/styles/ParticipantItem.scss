@@ -2,19 +2,64 @@
   display: flex;
   align-items: center;
   font-size: 30px;
+  width: 100%;
+  justify-content: space-between;
+  .left {
+    display: flex;
+    align-items: center;
+  }
+  .right {
+    display: flex;
+    align-items: center;
+  }
+  .avatarSection {
+    position: relative;
+    .trash {
+      width: 80px;
+      height: 80px;
+      display: none;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      cursor: pointer;
+      .t1, .t2 {
+        display: block;
+        position: absolute;
+        top: 10%;
+        left: 50%;
+        background-color: red;
+        width: 2px;
+        height: 60px;
+        border-radius: 90px;
+      }
+      .t1 {
+        transform: rotate(-45deg);
+      }
+      .t2 {
+        transform: rotate(45deg);
+      }
+    }
+  }
+  img {
+    width: 80px;
+  }
 
   .participantItem:hover {
+    .avatarSection {
+      .trash {
+        display: block;
+      }
+      .avatar {
+        filter: grayscale(100%);
+      }
+    }
     .addPointButton, .deletePointButton {
       visibility: visible;
     }
   }
 
   .participantName {
-    width: 30vw;
-  }
-
-  img {
-    width: 80px;
   }
 
   .addPointButton, .deletePointButton {

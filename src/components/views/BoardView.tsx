@@ -1,7 +1,7 @@
 import {Participant} from "../../types/Participant.ts";
 import '../../styles/BoardView.scss';
 import {useEffect, useRef, useState} from "react";
-import {addImportedParticipant, fetchBoard, updateBoard} from "../../helpers/boardHelper.ts";
+import {addImportedParticipant, fetchBoard, updateBoardParticipants} from "../../helpers/boardHelper.ts";
 import {Board} from "../../types/Board.ts";
 import {useNavigate, useParams} from 'react-router-dom';
 import dayjs from "dayjs";
@@ -22,18 +22,24 @@ import ResultModal from "../modals/ResultModal.tsx";
 import BDropdownButton from "../BDropdownButton.tsx";
 import ImportParticipantModal from "../modals/ImportParticipantModal.tsx";
 
+interface CheckboxState {
+    [key: string]: boolean;
+}
+
+
 export default function BoardView() {
     const [isBoardLoaded, setIsBoardLoaded] = useState(false);
     const [isAddParticipantModalOpen, setIsAddParticipantModalOpen] = useState(false);
     const [isImportParticipantModalOpen, setIsImportParticipantModalOpen] = useState(false);
     const [selectedParticipantList, setSelectedParticipantList] = useState<Participant[]>([]);
     const [isDeleteParticipantModalOpen, setIsDeleteParticipantModalOpen] = useState(false);
-    const [isResultModalOpen, setIsResultModalOpenOpen] = useState(false);
+    const [isResultModalOpen, setIsResultModalOpen] = useState(false);
     const [board, setBoard] = useState<Board | null>(null);
     const [isTimesUp, setIsTimesUp] = useState(false);
     const {boardId} = useParams();
     const navigate = useNavigate();
     const [hasBoardUpdated, setHasBoardUpdated] = useState(false);
+    const [checkboxes, setCheckboxes] = useState<CheckboxState>({});
 
     const hasFetchedBoard = useRef(false);
 
@@ -55,7 +61,7 @@ export default function BoardView() {
 
     useEffect(() => {
         if (isBoardLoaded && hasBoardUpdated) {
-            updateBoard(board);
+            updateBoardParticipants(board);
         }
     }, [board, isBoardLoaded, hasBoardUpdated]);
 
@@ -105,6 +111,15 @@ export default function BoardView() {
         setSelectedParticipantList([]);
     }
 
+    function uncheckedAllCheckboxes() {
+        const newCheckboxes = {...checkboxes};
+        for (let key in newCheckboxes) {
+            newCheckboxes[key] = false;
+        }
+        setCheckboxes(newCheckboxes);
+        setSelectedParticipantList([]);
+    }
+
     function onParticipantUpdate(updatedParticipant: Participant) {
         const updatedParticipantList = board
             ? board.participants.map((participant: Participant) => {
@@ -148,7 +163,7 @@ export default function BoardView() {
     }
 
     function handleSeeResult() {
-        setIsResultModalOpenOpen(true);
+        setIsResultModalOpen(true);
     }
 
     function handleImportParticipantButton() {
@@ -158,7 +173,7 @@ export default function BoardView() {
     function handleImportParticipantModal(newParticipant: Participant) {
 
         addImportedParticipant(newParticipant, board?.id || 0).then((id) => {
-            if(id) {
+            if (id) {
                 const newParticipantList = board
                     ? [...board.participants, newParticipant].sort((a, b) => b.points - a.points)
                     : [newParticipant];
@@ -170,12 +185,17 @@ export default function BoardView() {
         });
     }
 
+    function handleDeleteParticipant(participant: Participant) {
+        setIsDeleteParticipantModalOpen(true);
+        uncheckedAllCheckboxes();
+        setSelectedParticipantList([participant]);
+    }
+
     return (
         <>
             <BHeader/>
             <BButton onClick={handleGoBack}><IoArrowBackOutline/> Go back</BButton>
             <h2>{hasFetchedBoard.current ? board?.name : <Skeleton variant="text"/>}</h2>
-
             <div className="endTime">
                 <div className="endTimeLabel">
                     <p>Time remaining :</p>
@@ -186,6 +206,19 @@ export default function BoardView() {
                 {hasFetchedBoard.current && <FlipClockCountdown digitBlockStyle={{width: 30, height: 60, fontSize: 30}}
                                                                 to={dayjs(board?.endTime).valueOf()}
                                                                 onComplete={() => handleOnBoardTimesUp()}/>}
+            </div>
+            <div className={"boardActions"}>
+                <BDropdownButton label={"Select a participant"}
+                                 elements={["Add new participant", "Import existing participant"]}
+                                 handleOnClicks={[handleAddParticipantButton, handleImportParticipantButton]}
+                />
+                <BButton disabled={selectedParticipantList.length <= 0} second
+                         onClick={handleDeleteParticipantButton}>Delete</BButton>
+                <div className={"boardSetting"} onClick={() => setIsBoardSettingModalOpen(!isBoardSettingModalOpen)}>
+                    <IoSettings className={"settingFull"}/>
+                    <IoSettingsOutline className={"settingEmpty"}/>
+                </div>
+
             </div>
             <FlipMove className="participantList">
                 {!hasFetchedBoard.current ?
@@ -203,24 +236,35 @@ export default function BoardView() {
                         <li key={p.id} className="participantItem">
                             <BCheckbox
                                 id={"checkbox-" + p.id} participant={p}
-                                onUnselectAction={() => handleUnselectParticipant(p)}
-                                onSelectAction={() => handleSelectParticipant(p)}/>
+                                checked={checkboxes[p.id]}
+                                onUnselectAction={() => {
+                                    handleUnselectParticipant(p);
+                                    setCheckboxes(
+                                        (prevCheckboxes) => {
+                                            const newCheckboxes = {...prevCheckboxes};
+                                            delete newCheckboxes[p.id];
+                                            return newCheckboxes;
+                                        }
+                                    );
+                                }}
+                                onSelectAction={() => {
+                                    handleSelectParticipant(p);
+                                    setCheckboxes((prevCheckboxes) => ({
+                                        ...prevCheckboxes,
+                                        [p.id]: true,
+                                    }));
+                                }}/>
                             <span
                                 className={`position ${i == 0 ? "firstPlace" : i == 1 ? "secondPlace" : i == 2 ? "thirdPlace" : ''}`}>{i + 1}
                 </span>
-                            <ParticipantItem participant={p} onUpdate={onParticipantUpdate}/>
+                            <ParticipantItem participant={p} onUpdate={onParticipantUpdate}
+                                             onDeleteParticipant={handleDeleteParticipant}
+                                             pointStyle={board?.pointStyle || "stick"}
+                            />
                         </li>
                     ))}
 
             </FlipMove>
-            <div className={"boardActions"}>
-                <BDropdownButton label={"Select a participant"}
-                                 elements={["Add new participant", "Import existing participant"]}
-                                 handleOnClicks={[handleAddParticipantButton, handleImportParticipantButton]}
-                />
-                <BButton disabled={selectedParticipantList.length <= 0} second
-                         onClick={handleDeleteParticipantButton}>Delete</BButton>
-            </div>
 
             {
                 isAddParticipantModalOpen &&
@@ -238,7 +282,7 @@ export default function BoardView() {
             {
                 isResultModalOpen &&
                 <ResultModal participants={board?.participants || []} className="resultModal"
-                             handleValidateAction={() => setIsResultModalOpenOpen(false)}
+                             handleValidateAction={() => setIsResultModalOpen(false)}
                              boardName={board?.name || ''}></ResultModal>
             }
             {
