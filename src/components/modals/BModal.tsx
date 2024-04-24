@@ -1,7 +1,7 @@
 import '../../styles/modal/BModal.scss';
 import BButton from "../BButton";
 import * as React from "react";
-import {useEffect} from "react";
+import {useEffect, useRef} from "react";
 
 type BModalProps = {
     handleFirstAction: () => void;
@@ -39,15 +39,21 @@ export default function BModal({
         }),
     };
 
+    const modalRef = useRef<HTMLDivElement>(null);
+
     useEffect(() => {
-        document.body.style.overflow = 'hidden';
-        document.documentElement.scrollTop = 0;
-        return () => {
-            document.body.style.overflow = 'visible';
-        };
+        if (modalRef.current) {
+            modalRef.current.focus();
+
+            document.body.style.overflow = 'hidden';
+            document.documentElement.scrollTop = 0;
+            return () => {
+                document.body.style.overflow = 'visible';
+            };
+        }
     }, []);
 
-    function handleKeyPress(event: React.KeyboardEvent<HTMLInputElement>) {
+    function handleKeyPress(event: React.KeyboardEvent<HTMLDivElement>) {
         if (event.key === "Enter") {
             handleFirstAction();
         }
@@ -57,14 +63,14 @@ export default function BModal({
     }
 
     return (
-        <>
+        <div onKeyDown={handleKeyPress} ref={modalRef} tabIndex={0}>
             <div className="modalBackground">
             </div>
 
             <div className="modal" style={modalStyle}>
                 <h2>{title}</h2>
                 {children}
-                <div className="actions" onKeyDown={handleKeyPress}>
+                <div className="actions">
                     <BButton disabled={isLoading} second
                              onClick={handleSecondAction}>
                         {secondActionLabel || "Cancel"}
@@ -78,6 +84,6 @@ export default function BModal({
                     </BButton>
                 </div>
             </div>
-        </>
+        </div>
     )
 }
