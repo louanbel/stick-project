@@ -13,7 +13,7 @@ import AddParticipantModal from "../modals/AddParticipantModal.tsx";
 import DeleteParticipantModal from "../modals/DeleteParticipantModal.tsx";
 import FlipClockCountdown from '@leenguyen/react-flip-clock-countdown';
 import '@leenguyen/react-flip-clock-countdown/dist/index.css';
-import {IoArrowBackOutline} from "react-icons/io5";
+import {IoArrowBackOutline, IoSettings, IoSettingsOutline} from "react-icons/io5";
 import BHeader from "../BHeader.tsx";
 import ParticipantItemSkeleton from "../ParticipantItemSkeleton.tsx";
 import {Skeleton} from "@mui/material";
@@ -21,6 +21,7 @@ import {isTokenExpired} from "../../helpers/loginHelper.ts";
 import ResultModal from "../modals/ResultModal.tsx";
 import BDropdownButton from "../BDropdownButton.tsx";
 import ImportParticipantModal from "../modals/ImportParticipantModal.tsx";
+import BoardSettingModal from "../modals/BoardSettingModal.tsx";
 
 interface CheckboxState {
     [key: string]: boolean;
@@ -34,6 +35,7 @@ export default function BoardView() {
     const [selectedParticipantList, setSelectedParticipantList] = useState<Participant[]>([]);
     const [isDeleteParticipantModalOpen, setIsDeleteParticipantModalOpen] = useState(false);
     const [isResultModalOpen, setIsResultModalOpen] = useState(false);
+    const [isBoardSettingModalOpen, setIsBoardSettingModalOpen] = useState(false);
     const [board, setBoard] = useState<Board | null>(null);
     const [isTimesUp, setIsTimesUp] = useState(false);
     const {boardId} = useParams();
@@ -191,6 +193,14 @@ export default function BoardView() {
         setSelectedParticipantList([participant]);
     }
 
+    function handleValidateSetting() {
+        setIsBoardSettingModalOpen(false);
+    }
+
+    function handleCancelSettingAction() {
+        setIsBoardSettingModalOpen(false);
+    }
+
     return (
         <>
             <BHeader/>
@@ -292,6 +302,14 @@ export default function BoardView() {
                 }} handleImportParticipant={(participant) => {
                     handleImportParticipantModal(participant);
                 }} boardId={board?.id}></ImportParticipantModal>
+            }
+            {
+                (isBoardSettingModalOpen && board) &&
+                <BoardSettingModal className="boardSettingModal"
+                                   handleValidateAction={() => handleValidateSetting()}
+                                   handleCancelAction={() => handleCancelSettingAction()}
+                                   board={board}
+                ></BoardSettingModal>
             }
         </>
     )

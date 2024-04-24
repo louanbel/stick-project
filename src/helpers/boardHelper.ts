@@ -64,6 +64,35 @@ export async function updateBoard(board?: Board | null) {
             console.error("Trying to save an undefined board");
             return;
         }
+        const response = await axios.put(`${import.meta.env.VITE_API_URL}/board/${board.id}`,
+            JSON.stringify(board),
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                    "Authorization": `Bearer ${localStorage.getItem('access_token')}`
+                }
+            }
+        );
+
+        if (response.status == 200) {
+            console.log('The board was saved successfully : ', response.data);
+        } else {
+            console.error('Failed to save the board data : ', response.data);
+            throw new Error('Failed to save the board data : ' + response.data);
+        }
+    } catch (error) {
+        console.error('Error while saving board data:', error);
+        throw error;
+    }
+
+}
+
+export async function updateBoardParticipants(board?: Board | null) {
+    try {
+        if (!board) {
+            console.error("Trying to save an undefined board");
+            return;
+        }
 
         const response = await axios.put(`${import.meta.env.VITE_API_URL}/board/update-participants/${board.id}`,
             JSON.stringify(board.participants),
