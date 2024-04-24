@@ -39,10 +39,10 @@ export default function ResultModal({
 
     return (
         <div className={className}>
-            <BModal handleFirstAction={handleValidateAction} handleSecondAction={handleDownload}
-                    secondActionLabel={"Download results"}
+            <BModal handleFirstAction={handleDownload} handleSecondAction={handleValidateAction}
+                    secondActionLabel={"Done"}
                     title={`Scoreboard of ${boardName}`}
-                    firstActionLabel={"Done"}>
+                    firstActionLabel={"Download results"}>
                 <div id="scoreboard" className={"scoreboard"}>
                     {participants.length >= 3 &&
                         <div className="resultSection">

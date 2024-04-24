@@ -83,6 +83,7 @@ export default function AddParticipantModal({
 
         if (nameInput.length == 0) {
             setIsError(true);
+            setIsLoading(false);
             return;
         }
 

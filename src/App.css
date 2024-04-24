@@ -1,7 +1,9 @@
 #root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+  width: 600px;
+  margin: 2rem;
+  @media (max-width: 600px) {
+    width: 100% !important;
+  }
 }
 body {
   background-color: #f9f9fa;

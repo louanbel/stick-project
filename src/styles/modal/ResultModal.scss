@@ -4,13 +4,13 @@
   justify-content: center;
   align-items: center;
   gap: 5px;
+  overflow-y: scroll;
 
   .resultSection {
     width: 70%;
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
-    margin-top: 20px;
 
     > * {
       width: 33%;
@@ -39,7 +39,7 @@
         color: white;
         padding: 5px;
         background-color: #213547;
-        height: 200px;
+        height: 20vh;
       }
     }
 
@@ -63,7 +63,7 @@
         color: white;
         padding: 5px;
         background-color: #213547;
-        height: 150px;
+        height: 10vh;
       }
     }
 
@@ -87,7 +87,7 @@
         color: white;
         padding: 5px;
         background-color: #213547;
-        height: 170px;
+        height: 15vh;
       }
     }
   }
@@ -121,6 +121,20 @@
   }
 
 }
+
+@media (max-width: 1200px) {
+  .resultModal .modal {
+    height: 80%;
+  }
+}
+
+@media (max-width: 800px) {
+  .resultModal .modal {
+    width: 80%;
+  }
+
+}
+
 
 @media (max-width: 600px) {
   .scoreboard .resultSection {

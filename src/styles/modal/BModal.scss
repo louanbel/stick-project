@@ -1,4 +1,5 @@
 .modalBackground {
+  z-index: 998;
   position: absolute;
   top: 0;
   left: 0;
@@ -9,6 +10,7 @@
 }
 
 .modal {
+  z-index: 999;
   position: absolute;
   left: 50%;
   top: 50%;
@@ -21,6 +23,12 @@
   display: flex;
   flex-direction: column;
   gap: 18px;
+
+  .actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+  }
 
   .section {
     display: flex;
@@ -38,13 +46,9 @@
       font-size: 12px;
       margin-top: 3px;
     }
+
   }
 
-  .actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 8px;
-  }
 
   h2 {
     padding: unset;
@@ -52,10 +56,3 @@
   }
 }
 
-
-@media (max-width: 800px) {
-  .modal {
-    width: 80%;
-  }
-
-}

@@ -1,8 +1,13 @@
 .email, .password {
   display: flex;
   flex-direction: column;
-  width: 50%;
+  min-width: 200px;
 }
+
+.email {
+  min-width: 300px;
+}
+
 
 h1 {
   margin: 0;
@@ -25,6 +30,7 @@ h1 {
   }
 
   input {
+    box-sizing: border-box;
     width: 100%;
     border: 1px solid #e5e7eb;
     border-radius: 5px;

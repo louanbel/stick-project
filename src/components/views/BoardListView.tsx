@@ -73,7 +73,7 @@ export default function BoardListView() {
 
 
     return (
-        <>
+        <div className={"boardListView"}>
             <BHeader/>
             <h2>My boards</h2>
             <ul className="boardList">
@@ -83,32 +83,26 @@ export default function BoardListView() {
                 {!isBoardListLoaded &&
                     <>
                         <li>
-                            <Skeleton variant="rounded"><BoardCard board={Board.skeletonPartialBoard()}
-                                                                       handleDeleteBoardAction={() => {
-                                                                       }}/></Skeleton>
+                            <Skeleton
+                                variant="rounded" height={150}></Skeleton>
                         </li>
                         <li>
                             <Skeleton
-                                variant="rounded"><BoardCard board={Board.skeletonPartialBoard()}
-                                                                 handleDeleteBoardAction={() => {
-                                                                 }}/></Skeleton>
+                                variant="rounded" height={150}></Skeleton>
                         </li>
                         <li>
                             <Skeleton
-                                variant="rounded"><BoardCard board={Board.skeletonPartialBoard()}
-                                                                 handleDeleteBoardAction={() => {
-                                                                 }}/></Skeleton>
+                                variant="rounded" height={150}></Skeleton>
                         </li>
                     </>
                 }
             </ul>
-            {<div></div>}
             <div className={"actions"}>
                 <BButton first onClick={handleCreateNewBoard}>Create</BButton>
             </div>
             {
                 isCreateBoardModalOpen &&
-                <CreateBoardModal className="addParticipantModal" handleCreateBoard={handleCreateBoardModal}
+                <CreateBoardModal className="createBoardModal" handleCreateBoard={handleCreateBoardModal}
                                   handleCancelAction={handleCancelCreateBoardModal}></CreateBoardModal>
             }
             {
@@ -117,6 +111,6 @@ export default function BoardListView() {
                                                                                     handleValidateAction={handleDeleteBoardModal}/>
             }
 
-        </>
+        </div>
     )
 }
