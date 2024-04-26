@@ -53,7 +53,7 @@ export default function ParticipantItem({
                         className="points">{participant.points > 1 ? `${participant.points}pts` : `${participant.points}pt`}</span>}
                 <IoAddCircleOutline className="addPointButton"
                                     onClick={handleIncreasePoints}/>
-            </div>  
+            </div>
         </div>
     )
 }

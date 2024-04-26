@@ -9,8 +9,15 @@
     align-items: center;
   }
   .right {
+    max-width: 60%;
     display: flex;
     align-items: center;
+
+    .addPointButton, .deletePointButton {
+      flex-shrink: 0;
+      width: 35px;
+      height: 30px;
+    }
   }
   .avatarSection {
     position: relative;

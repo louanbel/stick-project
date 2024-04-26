@@ -1,14 +1,86 @@
-.list, .point {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-.list {
+.pointListItem {
   display: flex;
-  gap: 10px;
+  flex-wrap: wrap;
+  gap: 15px;
+  .point-group {
+    position: relative;
+    display: flex;
+    gap: 10px;
+  }
+
+  @keyframes grow {
+    0% {
+      height: 0;
+      opacity: 0;
+    }
+    100% {
+      height: 40px;
+      opacity: 1;
+    }
+  }
+
+  .point {
+    background-color: black;
+    height: 0;
+    width: 4px;
+    &:not(.crossed) {
+      animation: grow 0.5s ease-out forwards;
+    }
+  }
+  @keyframes draw-cross {
+    0% {
+      width: 0;
+    }
+    100% {
+      width: 130%;
+    }
+  }
+
+  .crossed {
+    rotate: 20deg;
+    position: absolute;
+    height: 4px;
+    width: 0;
+    top: 25%;
+    left: -12.5%;
+    transform: translateY(-50%);
+    background-color: black;
+    transform-origin: left center;
+    animation: draw-cross 0.5s ease-out forwards;
+  }
 }
-.point {
-  background-color: black;
-  height: 40px;
-  width: 4px;
+
+
+@media (max-width: 768px) {
+  .pointListItem {
+    @keyframes grow {
+      0% {
+        height: 0;
+        opacity: 0;
+      }
+      100% {
+        height: 30px;
+        opacity: 1;
+      }
+    }
+    .point-group {
+      gap: 5px;
+    }
+    .point {
+      width: 3px;
+    }
+    .crossed {
+      height: 3px;
+      top: 30%;
+      left: -17.5%;
+    }
+    @keyframes draw-cross {
+      0% {
+        width: 0;
+      }
+      100% {
+        width: 140%;
+      }
+    }
+  }
 }
