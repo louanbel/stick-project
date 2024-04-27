@@ -66,9 +66,6 @@
     }
   }
 
-  .participantName {
-  }
-
   .addPointButton, .deletePointButton {
     cursor: pointer;
     visibility: hidden;
@@ -94,8 +91,15 @@
     .position {
         transform: translate(0px, 1px);
     }
+    .addPointButton {
+      margin-left: 6px;
+    }
 
-    img {
+    .deletePointButton {
+      margin-right: 6px;
+    }
+
+      img {
       width: 70px;
     }
   }

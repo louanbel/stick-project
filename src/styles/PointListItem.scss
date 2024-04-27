@@ -53,6 +53,9 @@
 
 @media (max-width: 768px) {
   .pointListItem {
+    gap: 10px;
+    font-size: 16px;
+    align-items: center;
     @keyframes grow {
       0% {
         height: 0;
