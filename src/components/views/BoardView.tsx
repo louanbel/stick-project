@@ -1,6 +1,6 @@
 import {Participant} from "../../types/Participant.ts";
 import '../../styles/BoardView.scss';
-import {useEffect, useRef, useState} from "react";
+import {useEffect, useState} from "react";
 import {addImportedParticipant, fetchBoard, updateBoardParticipants} from "../../helpers/boardHelper.ts";
 import {Board} from "../../types/Board.ts";
 import {useNavigate, useParams} from 'react-router-dom';
@@ -29,7 +29,7 @@ interface CheckboxState {
 
 
 export default function BoardView() {
-    const [isBoardLoaded, setIsBoardLoaded] = useState(false);
+    const [isBoardLoaded, setIsBoardLoaded] = useState<Boolean>(false);
     const [isAddParticipantModalOpen, setIsAddParticipantModalOpen] = useState(false);
     const [isImportParticipantModalOpen, setIsImportParticipantModalOpen] = useState(false);
     const [selectedParticipantList, setSelectedParticipantList] = useState<Participant[]>([]);
@@ -42,21 +42,18 @@ export default function BoardView() {
     const navigate = useNavigate();
     const [hasBoardUpdated, setHasBoardUpdated] = useState(false);
     const [checkboxes, setCheckboxes] = useState<CheckboxState>({});
-
-    const hasFetchedBoard = useRef(false);
-
+    
     useEffect(() => {
         if (isTokenExpired()) {
             console.log("Token is expired");
             navigate('/login');
             return;
         }
-        if (boardId != undefined && !hasFetchedBoard.current) {
+        if (boardId != undefined) {
             console.log("Fetching board");
             fetchBoard(boardId).then((board) => {
                 setBoard(board);
                 setIsBoardLoaded(true);
-                hasFetchedBoard.current = true;
             });
         }
     }, []);
@@ -205,17 +202,18 @@ export default function BoardView() {
         <>
             <BHeader/>
             <BButton onClick={handleGoBack}><IoArrowBackOutline/> Go back</BButton>
-            <h2>{hasFetchedBoard.current ? board?.name : <Skeleton variant="text"/>}</h2>
+            <h2>{isBoardLoaded ? board?.name : <Skeleton variant="text"/>}</h2>
             <div className="endTime">
                 <div className="endTimeLabel">
                     <p>Time remaining :</p>
-                    {!hasFetchedBoard.current && <Skeleton variant="text" width={100}/>}
-                    {hasFetchedBoard.current && isTimesUp &&
+                    {!isBoardLoaded && <Skeleton variant="text" width={100}/>}
+                    {isBoardLoaded && isTimesUp &&
                         <p className="timesUpLabel"><BButton yellow onClick={handleSeeResult}>See results</BButton></p>}
                 </div>
-                {hasFetchedBoard.current && <FlipClockCountdown digitBlockStyle={{width: 30, height: 60, fontSize: 30}}
-                                                                to={dayjs(board?.endTime).valueOf()}
-                                                                onComplete={() => handleOnBoardTimesUp()}/>}
+                {isBoardLoaded && board?.endTime &&
+                    <FlipClockCountdown digitBlockStyle={{width: 30, height: 60, fontSize: 30}}
+                                        to={dayjs(board?.endTime).valueOf()}
+                                        onComplete={() => handleOnBoardTimesUp()}/>}
             </div>
             <div className={"boardActions"}>
                 <BDropdownButton label={"Select a participant"}
@@ -231,8 +229,8 @@ export default function BoardView() {
 
             </div>
             <FlipMove className="participantList">
-                {!hasFetchedBoard.current ?
-                    <>
+                {!isBoardLoaded &&
+                    <div className={"skeletonList"}>
                         <li className="participantItem">
                             <ParticipantItemSkeleton/>
                         </li>
@@ -242,37 +240,39 @@ export default function BoardView() {
                         <li className="participantItem">
                             <ParticipantItemSkeleton/>
                         </li>
-                    </> : board?.participants.map((p, i) => (
-                        <li key={p.id} className="participantItem">
-                            <BCheckbox
-                                id={"checkbox-" + p.id} participant={p}
-                                checked={checkboxes[p.id]}
-                                onUnselectAction={() => {
-                                    handleUnselectParticipant(p);
-                                    setCheckboxes(
-                                        (prevCheckboxes) => {
-                                            const newCheckboxes = {...prevCheckboxes};
-                                            delete newCheckboxes[p.id];
-                                            return newCheckboxes;
-                                        }
-                                    );
-                                }}
-                                onSelectAction={() => {
-                                    handleSelectParticipant(p);
-                                    setCheckboxes((prevCheckboxes) => ({
-                                        ...prevCheckboxes,
-                                        [p.id]: true,
-                                    }));
-                                }}/>
-                            <span
-                                className={`position ${i == 0 ? "firstPlace" : i == 1 ? "secondPlace" : i == 2 ? "thirdPlace" : ''}`}>{i + 1}
+                    </div>
+                }
+                {board?.participants.map((p, i) => (
+                    <li key={p.id} className="participantItem">
+                        <BCheckbox
+                            id={"checkbox-" + p.id} participant={p}
+                            checked={checkboxes[p.id]}
+                            onUnselectAction={() => {
+                                handleUnselectParticipant(p);
+                                setCheckboxes(
+                                    (prevCheckboxes) => {
+                                        const newCheckboxes = {...prevCheckboxes};
+                                        delete newCheckboxes[p.id];
+                                        return newCheckboxes;
+                                    }
+                                );
+                            }}
+                            onSelectAction={() => {
+                                handleSelectParticipant(p);
+                                setCheckboxes((prevCheckboxes) => ({
+                                    ...prevCheckboxes,
+                                    [p.id]: true,
+                                }));
+                            }}/>
+                        <span
+                            className={`position ${i == 0 ? "firstPlace" : i == 1 ? "secondPlace" : i == 2 ? "thirdPlace" : ''}`}>{i + 1}
                 </span>
-                            <ParticipantItem participant={p} onUpdate={onParticipantUpdate}
-                                             onDeleteParticipant={handleDeleteParticipant}
-                                             pointStyle={board?.pointStyle || "stick"}
-                            />
-                        </li>
-                    ))}
+                        <ParticipantItem participant={p} onUpdate={onParticipantUpdate}
+                                         onDeleteParticipant={handleDeleteParticipant}
+                                         pointStyle={board?.pointStyle || "stick"}
+                        />
+                    </li>
+                ))}
 
             </FlipMove>
 

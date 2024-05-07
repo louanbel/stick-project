@@ -56,7 +56,7 @@ h2 {
   }
 }
 
-.participantList {
+.participantList, .skeletonList {
   display: flex;
   flex-direction: column;
   list-style: none;
