@@ -11,6 +11,7 @@ export default function RegisterView() {
     const [password, setPassword] = useState('');
     const [repeatedPassword, setRepeatedPassword] = useState('');
     const [isLoggingSameError, setIsLoggingSameError] = useState(false);
+    const [isRegisteringIn, setIsRegisteringIn] = useState(false);
     const [registerReponse, setRegisterResponse] = useState<LoginResponse | null>(null);
     const abortController = new AbortController();
     const signal = abortController.signal;
@@ -28,11 +29,13 @@ export default function RegisterView() {
 
     const handleSubmit = (event: { preventDefault: () => void; }) => {
         event.preventDefault();
+        setIsRegisteringIn(true);
         registerUser(signal, email, password).then((registerResponse) => {
             if (registerResponse.loginStatus == LoginStatus.SUCCESS) {
                 navigate('/');
             }
             setRegisterResponse(registerResponse);
+            setIsRegisteringIn(false);
         });
     };
 
@@ -81,6 +84,7 @@ export default function RegisterView() {
                     {isLoggingSameError && password != '' && <p className="error">The passwords doesn't match</p>}
                     <div className="actions">
                         <BButton disabled={email.length <= 0 || password.length <= 0 || isLoggingSameError} first submit
+                                 isLoading={isRegisteringIn}
                                  onClick={() => {
                                  }}>Register</BButton>
                         <div className="loginAction">

@@ -9,7 +9,7 @@ export default function LoginView() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoggingError, setIsLoggingError] = useState(false);
-
+    const [isLoggingIn, setIsLoggingIn] = useState(false);
     const abortController = new AbortController();
     const signal = abortController.signal;
     const navigate = useNavigate();
@@ -26,6 +26,7 @@ export default function LoginView() {
 
     const handleSubmit = (event: { preventDefault: () => void; }) => {
         event.preventDefault();
+        setIsLoggingIn(true);
         loginUser(signal, email, password).then((isLogged) => {
             if (isLogged) {
                 setIsLoggingError(false);
@@ -33,6 +34,7 @@ export default function LoginView() {
             } else {
                 setIsLoggingError(true);
             }
+            setIsLoggingIn(false);
         });
     };
 
@@ -67,7 +69,7 @@ export default function LoginView() {
                     </div>
                     <div className="actions">
                         <BButton disabled={email.length <= 0 || password.length <= 0} first submit onClick={() => {
-                        }}>Login</BButton>
+                        }} isLoading={isLoggingIn}>Login</BButton>
                         <div className="loginAction">
                             <p>Don't have an account?</p>
                             <BButton second onClick={() => {
