@@ -209,6 +209,7 @@ export default function BoardView() {
                     {!isBoardLoaded && <Skeleton variant="text" width={100}/>}
                     {isBoardLoaded && isTimesUp &&
                         <p className="timesUpLabel"><BButton yellow onClick={handleSeeResult}>See results</BButton></p>}
+                    {isBoardLoaded && board?.endTime == undefined && <p>Unlimited</p>}
                 </div>
                 {isBoardLoaded && board?.endTime &&
                     <FlipClockCountdown digitBlockStyle={{width: 30, height: 60, fontSize: 30}}
@@ -242,6 +243,7 @@ export default function BoardView() {
                         </li>
                     </div>
                 }
+                {board?.participants.length === 0 && <p>You don't have a participant yet. Try to add one!</p>}
                 {board?.participants.map((p, i) => (
                     <li key={p.id} className="participantItem">
                         <BCheckbox
